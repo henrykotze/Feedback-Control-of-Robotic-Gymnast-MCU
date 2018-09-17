@@ -1,0 +1,2 @@
+uart_comms.c:13:6:data_aquisition	56	static
+uart_comms.c:34:6:uart_request	16	static

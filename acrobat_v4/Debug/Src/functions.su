@@ -1,0 +1,9 @@
+functions.c:14:6:HAL_UART_RxCpltCallback	0	static
+functions.c:19:6:HAL_GPIO_EXTI_Callback	0	static
+functions.c:24:6:HAL_TIM_PeriodElapsedCallback	0	static
+functions.c:37:6:HAL_TIM_OC_DelayElapsedCallback	0	static
+functions.c:42:6:HAL_TIM_IC_CaptureCallback	0	static
+functions.c:46:6:HAL_TIM_PWM_PulseFinishedCallback	0	static
+functions.c:50:6:HAL_UART_TxCpltCallback	8	static
+functions.c:57:6:read_motor_position	8	static
+functions.c:83:6:torque_output	32	static
