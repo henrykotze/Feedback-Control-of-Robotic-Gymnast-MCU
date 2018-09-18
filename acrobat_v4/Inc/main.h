@@ -61,11 +61,11 @@
 #define POTENTIOMETER_GPIO_Port GPIOB
 #define CURRENT_Pin GPIO_PIN_1
 #define CURRENT_GPIO_Port GPIOB
-#define DIR_Pin GPIO_PIN_4
-#define DIR_GPIO_Port GPIOB
-#define ENCODER_Pin GPIO_PIN_5
+#define ENCODER_Pin GPIO_PIN_4
 #define ENCODER_GPIO_Port GPIOB
 #define ENCODER_EXTI_IRQn EXTI4_15_IRQn
+#define DIR_Pin GPIO_PIN_5
+#define DIR_GPIO_Port GPIOB
 
 /* ########################## Assert Selection ############################## */
 /**

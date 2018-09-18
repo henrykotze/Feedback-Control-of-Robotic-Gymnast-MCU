@@ -12,7 +12,7 @@ import msvcrt
 #LINUX EXAMPLE
 #PORTS="\\dev\\USBTTY1"
 # WINDOWS EXAMPLE
-PORT = 'COM9'
+PORT = 'COM11'
 
 # UART VARIABLES
 BUADRATE=230400
@@ -44,7 +44,7 @@ file_.write(description)
 file_.write(header)
 
 
-while(send_data != '$B,1\n'):
+while(send_data != '$B,1\n'): # if send_data = $B,1\r\n the experiment starts and data are streamed
     send_data = input('Enter Command to Send: ')
     if(send_data == '$B,1\n'):
         break

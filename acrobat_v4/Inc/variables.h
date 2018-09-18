@@ -82,7 +82,7 @@ extern double q2;						// angular position state variable of actuated pendulum
 extern double prev_q2;					// previous value of state variable
 extern double prevprev_q2;				// previous previous value of actuaded pendulum
 extern double q2dot;					// angular velocity of actuated pendulum
-extern int16_t q2_steps;				// number of steps
+extern int32_t q2_steps;				// number of steps
 
 
 extern uint32_t time;					// time keeping variable

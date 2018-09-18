@@ -77,7 +77,7 @@ double prev_q2 = 0;
 double prevprev_q2 = 0;
 double q2dot = 0;
 
-int16_t q2_steps = 0;
+int32_t q2_steps = 0;
 
 
 uint32_t time = 0;

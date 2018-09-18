@@ -43,8 +43,8 @@ void init_variables(){
 	memset(verification,0x00,8);
 
 	// might to be larger to account for decimals
-	data_buffer = (uint8_t*)malloc(40*sizeof(uint8_t));
-	memset(data_buffer,0x00,40);
+	data_buffer = (uint8_t*)malloc(72*sizeof(uint8_t));
+	memset(data_buffer,0x00,72);
 
 	// forming dat structure to be send
 	memcpy(data_buffer, dollar, strlen((char*)dollar));
@@ -61,15 +61,15 @@ void init_variables(){
 
 	send_q1 = (char*)malloc(10*sizeof(char));
 	memset(send_q1,0x00,10);
-	send_q2 = (char*)malloc(6*sizeof(char));
-	memset(send_q2,0x00,6);
+	send_q2 = (char*)malloc(32*sizeof(char));
+	memset(send_q2,0x00,32);
 	send_torque = (char*)malloc(4*sizeof(char));
 	memset(send_torque,0x00,4);
 	send_time = (char*)malloc(4*sizeof(char));
 	memset(send_time,0x00,4);
 
 
-
+	sprintf(send_q2,"%d", q2_steps);
 
 	// temporary, this should be done where the variables are measured
 
