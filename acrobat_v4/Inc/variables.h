@@ -63,7 +63,7 @@ extern uint8_t start;					// Start control system
 extern double* atan_vals;				// Discretized values of arc tan
 
 //scratchpad variables
-extern uint8_t* scratchpad;				// variable to temporary store other variables
+extern char* scratchpad;				// variable to temporary store other variables
 
 // data aquisition flag
 extern uint8_t data_flag;				// set flag to send state variables across uart

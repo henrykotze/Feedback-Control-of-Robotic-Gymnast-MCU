@@ -56,7 +56,7 @@ void init_variables(){
 	atan_vals = (double*)malloc(100*sizeof(double));
 	memset(atan_vals,0x00,100);
 
-	scratchpad = (uint8_t*)malloc(5*sizeof(uint8_t));
+	scratchpad = (char*)malloc(5*sizeof(char));
 	memset(scratchpad,0x00,5);
 
 	send_q1 = (char*)malloc(10*sizeof(char));

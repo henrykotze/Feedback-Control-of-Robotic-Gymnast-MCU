@@ -1,4 +1,4 @@
-q2 response with initial condition ,,,
+q2 response with initial condition 
 time,q1,q2,tau
 2,1521,430,0
 3,1533,430,0
@@ -708,6 +708,7 @@ time,q1,q2,tau
 785,1552,-7,0
 786,1539,-7,1
 788,1545,-7,0
+,-7,0
 789,1545,-7,0
 790,1541,-7,0
 791,1544,-7,0

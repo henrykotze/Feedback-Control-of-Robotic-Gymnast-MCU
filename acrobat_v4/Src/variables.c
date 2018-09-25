@@ -56,7 +56,7 @@ uint8_t start = 0;
 double* atan_vals = NULL;
 
 //scratchpad variables
-uint8_t* scratchpad = NULL;
+char* scratchpad = NULL;
 
 // data aquisition flag
 uint8_t data_flag = 0;

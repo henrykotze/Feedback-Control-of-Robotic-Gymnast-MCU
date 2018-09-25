@@ -10,6 +10,10 @@ extern TIM_HandleTypeDef htim16;
 extern TIM_HandleTypeDef htim14;
 extern TIM_HandleTypeDef htim3;
 extern UART_HandleTypeDef huart1;
+
+#define PI 3.14159265359
+#define max_torque
+
 // interrupt when byte is received on UART
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	uart_flag = 1;
@@ -61,11 +65,11 @@ void read_motor_position(){
 	error_step_prev = q2_steps;
 
 	if(HAL_GPIO_ReadPin(DIR_GPIO_Port, DIR_Pin) == 1){ // actuated pendulum is turning clockwise
-		q2_steps += 1;
+		q2_steps -= 1;
 		q2 = q2_steps*dir_increment_size;
 	}
 	else{ // actuated pendulum is turning anti-clockwise
-		q2_steps -= 1;
+		q2_steps += 1;
 		q2 = q2_steps*dir_increment_size;
 	}
 	sprintf(send_q2,"%d", q2_steps);
@@ -80,7 +84,7 @@ void read_motor_position(){
  */
 
 
-void torque_output(){
+void control_law(){
 //	if in the non-linear control region
 
 
@@ -93,47 +97,63 @@ void torque_output(){
 //	"DB3".Ts) * "DB3".Enow + "DB3".ki / (2 / "DB3".Ts) * "DB3".Eprev + "DB3".Uprev;
 
 
+//
+//	if(q2 > 0.f){
+//		compensate = 1;
+//		torque_prev = output_torque;
+////		output_torque = 2*(q2_steps - error_step_prev) + (q2_steps + error_step_prev) + torque_prev;
+//
+//		if(50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev>30){
+//			output_torque = 30;
+//		}
+//		else{
+//			output_torque = 50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev;
+//		}
+//
+//		duty_cycle = 100 - output_torque;
+//	}
+//	else if(q2 < 0.f){
+//		compensate = 0;
+//		torque_prev = output_torque;
+//
+//		if(50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev < -30){
+//			output_torque = -30;
+//		}
+//		else{
+//			output_torque = 50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev;
+//		}
+//
+//
+////		output_torque = 2*(q2_steps - error_step_prev) + (q2_steps + error_step_prev) + torque_prev;
+//		duty_cycle = output_torque + 100;
+//	}
+//
+//	if(compensate && q2_steps > 0.f){
+//		motor_dir = 0;
+//		HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,motor_dir);
+//		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle );
+//	}
+//
+//	else if (!compensate && q2_steps < 0.f){
+//		motor_dir = 1;
+//		HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,motor_dir);
+//		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle );
+//	}
 
-	if(q2 > 0.f){
-		compensate = 1;
-		torque_prev = output_torque;
-//		output_torque = 2*(q2_steps - error_step_prev) + (q2_steps + error_step_prev) + torque_prev;
+}
 
-		if(50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev>30){
-			output_torque = 30;
-		}
-		else{
-			output_torque = 50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev;
-		}
 
-		duty_cycle = 100 - output_torque;
+void output_torque(uint8_t dir, uint8_t duty_cycle){
+	if(duty_cycle > 30){ // safety percaustion to ensure safety
+		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 100 ); // stop motor
+
 	}
-	else if(q2 < 0.f){
-		compensate = 0;
-		torque_prev = output_torque;
-
-		if(50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev < -30){
-			output_torque = -30;
-		}
-		else{
-			output_torque = 50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev;
-		}
-
-
-//		output_torque = 2*(q2_steps - error_step_prev) + (q2_steps + error_step_prev) + torque_prev;
-		duty_cycle = output_torque + 100;
-	}
-
-	if(compensate && q2_steps > 0.f){
-		motor_dir = 0;
-		HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,motor_dir);
+	else{
+		HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,dir);
 		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle );
 	}
 
-	else if (!compensate && q2_steps < 0.f){
-		motor_dir = 1;
-		HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,motor_dir);
-		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle );
-	}
+
+
 
 }

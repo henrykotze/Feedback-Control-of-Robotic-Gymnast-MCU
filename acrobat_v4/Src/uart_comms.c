@@ -86,8 +86,10 @@ void uart_request(){
 		case 'F':	// Changing the duty-cycle output or control speed of motor
 //			data_buffer = rx_buffer;
 			memcpy(scratchpad, rx_buffer+3, strlen((char*)rx_buffer)-4);
-			duty_cycle = (uint8_t)strtol(scratchpad, (char**)NULL,10);
-			__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle);
+
+			output_torque(motor_dir, duty_cycle);
+			//duty_cycle = (uint8_t)strtol(scratchpad, (char**)NULL,10);
+			//__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle);
 
 
 			HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
@@ -113,12 +115,12 @@ void uart_request(){
 
 		case 'I': // Change direction of motor
 			if(rx_buffer[3] == '1'){
-				HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,1);
 				motor_dir = 1;
+				output_torque(motor_dir, duty_cycle);
 			}
 			else if(rx_buffer[3] == '0'){
-				HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,0);
 				motor_dir = 0;
+				output_torque(motor_dir, duty_cycle);
 			}
 			HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
 
