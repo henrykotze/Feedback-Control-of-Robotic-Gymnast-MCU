@@ -41,7 +41,6 @@ uint8_t error_step = 0;
 uint8_t error_step_prev = 0;
 uint8_t  torque = 0;
 int16_t torque_prev = 0;
-int16_t output_torque = 0;
 
 // Encoder angles
 uint8_t encoder_1 = 0;

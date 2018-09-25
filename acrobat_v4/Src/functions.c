@@ -102,13 +102,13 @@ void control_law(){
 		control_state = 3;
 	}
 
-	if(control_state == 0){ // swing-up controller
+	if(control_state == 0){ 			// swing-up controller
 
 	}
-	else if(control_state == 1){ // swing-up controller
+	else if(control_state == 1){ 		// swing-up controller
 
 	}
-	else if(control_state == 2){ // balancing controller
+	else if(control_state == 2){ 		// balancing controller
 
 	}
 

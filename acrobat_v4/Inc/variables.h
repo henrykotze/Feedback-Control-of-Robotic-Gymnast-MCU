@@ -48,7 +48,7 @@ extern uint8_t error_step;				// error of desired q2 position
 extern uint8_t error_step_prev;			// prevision error of actual q2 position
 extern uint8_t  torque;					//
 extern int16_t torque_prev;
-extern int16_t output_torque;			// output torque computed by PI Controller
+
 
 // Encoder angles
 extern uint8_t encoder_1;				// encoder 1 variable

@@ -7,6 +7,8 @@
 
 #ifndef FUNCTION_H_
 #define FUNCTION_H_
+#include "variables.h"
+
 
 void data_aquisition(); 			//	send data across UART
 void user_main();					//	main loop
