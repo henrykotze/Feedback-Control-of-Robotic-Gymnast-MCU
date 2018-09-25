@@ -34,6 +34,8 @@ uint8_t duty_cycle = 0;
 uint8_t* discrete_arctan = NULL;
 uint8_t motor_dir = 0;
 uint8_t compensate = 0;
+uint8_t control_state = 0;
+float alpha = 0;
 
 uint8_t error_step = 0;
 uint8_t error_step_prev = 0;
@@ -97,6 +99,9 @@ size_t size_time = 0;
 size_t size_q1 = 0;
 size_t size_q2 = 0;
 size_t size_torque = 0;
+
+// constants
+float PI = 3.14159265359;
 
 
 

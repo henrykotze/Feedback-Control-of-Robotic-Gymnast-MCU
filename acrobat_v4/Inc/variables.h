@@ -41,6 +41,8 @@ extern uint8_t duty_cycle;				// duty cycle of PWM signal send to motor controll
 extern uint8_t* discrete_arctan;		// array containing discretized arctan functions
 extern uint8_t motor_dir;				// direction of motor: 0 ccw, 1 cw
 extern uint8_t compensate;				// flag to compensate for overshoot
+extern uint8_t control_state;					// determines which controller is active
+extern float alpha;						// alpha value in the swing-up controller
 
 extern uint8_t error_step;				// error of desired q2 position
 extern uint8_t error_step_prev;			// prevision error of actual q2 position
@@ -99,5 +101,8 @@ extern size_t size_time;				// size of time variable
 extern size_t size_q1;					// size of send_q1 variable
 extern size_t size_q2;					// size of send_q2 variable
 extern size_t size_torque;				// size of send_torque variable
+
+// constants
+extern float PI;						// value for PI
 
 #endif /* VARIABLES_H_ */

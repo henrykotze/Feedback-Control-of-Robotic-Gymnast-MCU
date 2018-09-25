@@ -11,8 +11,11 @@ extern TIM_HandleTypeDef htim14;
 extern TIM_HandleTypeDef htim3;
 extern UART_HandleTypeDef huart1;
 
-#define PI 3.14159265359
+
 #define max_torque
+#define KP
+#define KI
+
 
 // interrupt when byte is received on UART
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
@@ -86,6 +89,28 @@ void read_motor_position(){
 
 void control_law(){
 //	if in the non-linear control region
+
+	if( (q1 < PI*0.3 || q1 < -PI*0.3 ) && control_state == 0){
+		control_state = 1;
+		alpha = PI/6;
+	}
+	else if( (q1 < PI*0.3 || q1 < -PI*0.3 ) && control_state == 1 ){
+		control_state = 2;
+		alpha = PI/6;
+	}
+	else if(  ( q1 > (PI-region_1) || q1 < (-PI+region_1) ) && (q2 < region_2 && q2 > -region_2) && control_state == 2){
+		control_state = 3;
+	}
+
+	if(control_state == 0){ // swing-up controller
+
+	}
+	else if(control_state == 1){ // swing-up controller
+
+	}
+	else if(control_state == 2){ // balancing controller
+
+	}
 
 
 // if we are in the null controllability region
