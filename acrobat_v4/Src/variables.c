@@ -47,14 +47,14 @@ uint8_t encoder_1 = 0;
 uint8_t encoder_2 = 0;
 uint8_t enable_encoder_reading = 1;
 uint8_t encoder_flag = 0;
-double dir_increment_size = 0.015707;
+float dir_increment_size = 0.015707;
 
 // Modes of operations
 uint8_t simulate = 1;
 uint8_t start = 0;
 
 // discretize arctan
-double* atan_vals = NULL;
+float* atan_vals = NULL;
 
 //scratchpad variables
 char* scratchpad = NULL;
@@ -68,15 +68,15 @@ uint8_t enable_data_aquisition = 0;
 uint8_t pwm_flag = 0;
 
 // measured state variables
-double q1 = 0;
-double prev_q1 = 0;
-double prevprev_q1 = 0;
-double q1dot = 0;
+float q1 = 0;
+float prev_q1 = 0;
+float prevprev_q1 = 0;
+float q1dot = 0;
 
-double q2 = 0;
-double prev_q2 = 0;
-double prevprev_q2 = 0;
-double q2dot = 0;
+float q2 = 0;
+float prev_q2 = 0;
+float prevprev_q2 = 0;
+float q2dot = 0;
 
 int32_t q2_steps = 0;
 
@@ -101,6 +101,8 @@ size_t size_torque = 0;
 
 // constants
 float PI = 3.14159265359;
+float region_1 = 0;
+float region_2 = 0;
 
 
 

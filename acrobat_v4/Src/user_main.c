@@ -47,7 +47,7 @@ void user_main(){
 		HAL_UART_Transmit_DMA(&huart1, ((uint8_t*)data_buffer),strlen((char*)data_buffer));
 	}
 
-	torque_output();
+	control_law();
 
 }
 
