@@ -15,10 +15,10 @@ void get_current_potentiometer(){
 
 
 
-	prevprev_q1 = prev_q1;
-	prev_q1 = q1;
-	q1 = ((int32_t)sampledPotentiometer-(int32_t)startval_sampledPotentiometer)*0.00153f;
-	torque = (sampledCurrent<<9);
+	//prevprev_q1 = prev_q1;
+	//prev_q1 = q1;
+	//q1 = ((int32_t)sampledPotentiometer-(int32_t)startval_sampledPotentiometer)*0.00153f;
+	//torque = (sampledCurrent<<9);
 
 
 	//three-point backward difference

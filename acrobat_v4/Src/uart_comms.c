@@ -43,11 +43,20 @@ void uart_request(){
 	if(rx_buffer[0] == '$' && rx_buffer[rx_buffer_cntr-1] == '\n' && rx_buffer_cntr > 2){
 
 		switch(rx_buffer[1]){
+
+		case 'T':
+
+
+
+//			output_torque(0,100);
+			break;
+
+
 		case 'X':	// stop all operation
-			__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 0);
+			__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 100);
 			enable_data_aquisition = 0;
-			enable_encoder_reading = 0;
-			enable_ADC_interrupt = 0;
+			//enable_encoder_reading = 0;
+			//enable_ADC_interrupt = 0;
 			HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
 			break;
 
@@ -55,63 +64,63 @@ void uart_request(){
 			HAL_UART_Transmit_IT(&huart1, ((uint8_t*)acrobat),strlen((char*)acrobat));
 			break;
 
-		case 'B':	// enable data aquisition to occur
-			if(*(rx_buffer+3) == '1'){
-				HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
-				enable_data_aquisition = 1;
-			}
-			else if(rx_buffer[3] == '0'){
-				enable_data_aquisition = 0;
-			}
-			break;
+//		case 'B':	// enable data aquisition to occur
+//			if(*(rx_buffer+3) == '1'){
+//				HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
+//				enable_data_aquisition = 1;
+//			}
+//			else if(rx_buffer[3] == '0'){
+//				enable_data_aquisition = 0;
+//			}
+//			break;
 
-		case 'C':	// send q1 values back
-			if(*(rx_buffer+3) == '1'){
-			}
-			else if(*(rx_buffer+3) == '0'){
+//		case 'C':	// send q1 values back
+//			if(*(rx_buffer+3) == '1'){
+//			}
+//			else if(*(rx_buffer+3) == '0'){
+//
+//			}
+//
+//			break;
 
-			}
-
-			break;
-
-		case 'D':	// Enable Control system to compute output torque
-			if(rx_buffer[2] == 1){
-				start = 1;
-			}
-			else if(rx_buffer[2] == 0){
-				start = 0;
-			}
-			break;
+//		case 'D':	// Enable Control system to compute output torque
+//			if(rx_buffer[2] == 1){
+//				start = 1;
+//			}
+//			else if(rx_buffer[2] == 0){
+//				start = 0;
+//			}
+//			break;
 
 		case 'F':	// Changing the duty-cycle output or control speed of motor
 //			data_buffer = rx_buffer;
 			memcpy(scratchpad, rx_buffer+3, strlen((char*)rx_buffer)-4);
+			duty_cycle = (uint8_t)strtol(scratchpad, (char**)NULL,10);
 
 			output_torque(motor_dir, duty_cycle);
-			//duty_cycle = (uint8_t)strtol(scratchpad, (char**)NULL,10);
 			//__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle);
 
 
 			HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
 			break;
 
-		case 'G': //Enable interrupts for encoder pulses
-			if(rx_buffer[3] == 1){
-				enable_encoder_reading = 1;
-			}
-			else if(rx_buffer[3] == 0){
-				enable_encoder_reading = 0;
-			}
-			break;
+//		case 'G': //Enable interrupts for encoder pulses
+//			if(rx_buffer[3] == 1){
+//				enable_encoder_reading = 1;
+//			}
+//			else if(rx_buffer[3] == 0){
+//				enable_encoder_reading = 0;
+//			}
+//			break;
 
-		case 'H': //Enable interrupts for ADC
-			if(rx_buffer[3] == '1'){
-				enable_ADC_interrupt = 1;
-			}
-			else if(rx_buffer[3] == '0'){
-				enable_ADC_interrupt = 0;
-			}
-			break;
+//		case 'H': //Enable interrupts for ADC
+//			if(rx_buffer[3] == '1'){
+//				enable_ADC_interrupt = 1;
+//			}
+//			else if(rx_buffer[3] == '0'){
+//				enable_ADC_interrupt = 0;
+//			}
+//			break;
 
 		case 'I': // Change direction of motor
 			if(rx_buffer[3] == '1'){
@@ -125,8 +134,6 @@ void uart_request(){
 			HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
 
 			break;
-
-
 		}
 
 	}

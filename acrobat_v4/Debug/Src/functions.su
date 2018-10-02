@@ -6,5 +6,5 @@ functions.c:49:6:HAL_TIM_IC_CaptureCallback	0	static
 functions.c:53:6:HAL_TIM_PWM_PulseFinishedCallback	0	static
 functions.c:57:6:HAL_UART_TxCpltCallback	8	static
 functions.c:64:6:read_motor_position	16	static
-functions.c:90:6:control_law	24	static
+functions.c:90:6:control_law	0	static
 functions.c:171:6:output_torque	8	static

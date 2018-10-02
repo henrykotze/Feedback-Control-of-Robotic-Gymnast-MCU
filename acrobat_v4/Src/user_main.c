@@ -18,19 +18,16 @@ void user_main(){
 
 	}
 
-	if(enable_encoder_reading == 1){
+
 		if(encoder_flag == 1){
 			encoder_flag = 0;
 			read_motor_position();
 		}
-	}
 
-	if(enable_ADC_interrupt == 1){
 		if(adc_flag == 1){
 			adc_flag = 0;
 			get_current_potentiometer();
 		}
-	}
 
 
 	if(enable_data_aquisition){
