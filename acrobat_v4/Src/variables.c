@@ -14,7 +14,7 @@ uint8_t* rx_buffer = NULL;
 uint8_t rx_byte = 0;
 uint8_t* data_buffer = NULL;
 uint8_t rx_buffer_cntr = 0;
-char* acrobat = "Feedback Control Of A Robotic Gymnast\r\n";
+char* acrobat = "Feed22back Control Of A Robotic Gymnast\r\n";
 char* dollar = "$";
 char* comma = ",";
 char* endSymbol = "\n";
@@ -95,8 +95,8 @@ size_t size_q1 = 0;
 size_t size_q2 = 0;
 size_t size_torque = 0;
 
-// constants
-// constants for controller
+// flags for sending and receiving
+uint8_t send_flag = 0;
 
 
 

@@ -82,7 +82,7 @@ extern uint8_t pwm_flag;
 //extern float prev_q2;					// previous value of state variable
 //extern float prevprev_q2;				// previous previous value of actuaded pendulum
 //extern float q2dot;					// angular velocity of actuated pendulum
-//extern int16_t q2_steps;				// number of steps
+extern int16_t q2_steps;				// number of steps
 
 
 extern uint32_t time;					// time keeping variable
@@ -100,6 +100,7 @@ extern size_t size_q1;					// size of send_q1 variable
 extern size_t size_q2;					// size of send_q2 variable
 extern size_t size_torque;				// size of send_torque variable
 
+extern uint8_t send_flag;				// flag that must be set before it may send new data.
 
 
 #endif /* VARIABLES_H_ */

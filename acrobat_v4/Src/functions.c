@@ -81,13 +81,6 @@ void read_motor_position(){
  * discrete value is contained in a array
  */
 
-
-void control_law(){
-
-
-}
-
-
 void output_torque(uint8_t dir, uint8_t duty_cycle){
 
 
@@ -99,8 +92,5 @@ void output_torque(uint8_t dir, uint8_t duty_cycle){
 		HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,dir);
 		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle );
 	}
-
-
-
 
 }

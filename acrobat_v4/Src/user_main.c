@@ -27,24 +27,19 @@ void user_main(){
 		if(adc_flag == 1){
 			adc_flag = 0;
 			get_current_potentiometer();
+			time += 1;
+			sprintf(send_time,"%lu", time);
+			data_aquisition();
 		}
 
 
 	if(enable_data_aquisition){
-		if(data_flag == 1){ // send system variables over UART
-			time += 1;
-			sprintf(send_time,"%lu", time);
-			data_flag = 0;
-			data_aquisition();
+		if(send_data_flag == 1){ // send system variables over UART
+//			send_flag = 0;
+
+
+			HAL_UART_Transmit_DMA(&huart1, ((uint8_t*)data_buffer),strlen((char*)data_buffer));
 		}
 	}
-
-	if(send_data_flag && enable_data_aquisition){
-		send_data_flag = 0;
-		HAL_UART_Transmit_DMA(&huart1, ((uint8_t*)data_buffer),strlen((char*)data_buffer));
-	}
-
-	control_law();
-
 }
 

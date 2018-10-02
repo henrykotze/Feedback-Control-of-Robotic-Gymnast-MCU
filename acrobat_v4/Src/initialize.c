@@ -43,8 +43,8 @@ void init_variables(){
 	memset(verification,0x00,8);
 
 	// might to be larger to account for decimals
-	data_buffer = (uint8_t*)malloc(36*sizeof(uint8_t));
-	memset(data_buffer,0x00,36);
+	data_buffer = (uint8_t*)malloc(40*sizeof(uint8_t));
+	memset(data_buffer,0x00,40);
 
 	// forming dat structure to be send
 	memcpy(data_buffer, dollar, strlen((char*)dollar));

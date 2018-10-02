@@ -7,12 +7,12 @@
 
 #include "function.h"
 #include "variables.h"
-#define R 155		// Resistor chosen in H-brigde circuit to transform proportional current to a voltage
 
 void get_current_potentiometer(){
-	sampledCurrent = ADC_buffer[1];
-	sampledPotentiometer = ADC_buffer[0];
-
+	//sampledCurrent = ADC_buffer[1];
+	//sampledPotentiometer = ADC_buffer[0];
+	sprintf(send_torque,"%lu", ADC_buffer[1]);
+	sprintf(send_q1,"%lu", ADC_buffer);
 
 
 	//prevprev_q1 = prev_q1;
@@ -27,12 +27,6 @@ void get_current_potentiometer(){
 
 
 
-	sprintf(send_torque,"%lu", sampledCurrent);
-	sprintf(send_q1,"%lu", sampledPotentiometer);
-	// Do conversion equation to get 'real' value
 
-
-
-	// store in buffer to be send across UART
 }
 
