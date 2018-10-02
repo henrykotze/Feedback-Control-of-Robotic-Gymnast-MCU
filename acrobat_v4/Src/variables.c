@@ -64,15 +64,15 @@ uint8_t enable_data_aquisition = 0;
 uint8_t pwm_flag = 0;
 
 // measured state variables
-//float q1 = 0;
-//float prev_q1 = 0;
-//float prevprev_q1 = 0;
-//float q1dot = 0;
-//
-//float q2 = 0;
-//float prev_q2 = 0;
-//float prevprev_q2 = 0;
-//float q2dot = 0;
+float q1 = 0;
+float prev_q1 = 0;
+float prevprev_q1 = 0;
+float q1dot = 0;
+
+float q2 = 0;
+float prev_q2 = 0;
+float prevprev_q2 = 0;
+float q2dot = 0;
 
 int16_t q2_steps = 0;
 

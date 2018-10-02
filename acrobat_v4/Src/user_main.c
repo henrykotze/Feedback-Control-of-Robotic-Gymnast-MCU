@@ -36,8 +36,6 @@ void user_main(){
 	if(enable_data_aquisition){
 		if(send_data_flag == 1){ // send system variables over UART
 //			send_flag = 0;
-
-
 			HAL_UART_Transmit_DMA(&huart1, ((uint8_t*)data_buffer),strlen((char*)data_buffer));
 		}
 	}
