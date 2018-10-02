@@ -88,90 +88,19 @@ void read_motor_position(){
 
 
 void control_law(){
-//	if in the non-linear control region
+
+	sin_q1_q2 = sin(q1+q2);
+	sin_q2 = sin(q2);
+	cos_q2 = cos(q2);
+	sin_q1 = sin(q1);
+
+	torque_controller = a*q2dot - a*q1dot + (b*sin_q1_q2) + (c*q1dot*q1dot*sin_q2) + (((d*cos_q2) + e)*((d*cos_q2) + e)/((f*cos_q2) + g) - h)*(58*q2 + (127*q2dot)/10 - (29*PI*atan(q1dot))/5) - (((i*cos_q2) + j)*((k*q1dot) + (l*sin_q1_q2) + (m*sin_q1) - (n*q2dot*q2dot*sin_q2) - (p*q1dot*q2dot*sin_q2)))/((q*cos_q2) + r);
 
 
 
-
-
-
-
-
-
-	if( (q1 < PI*0.3 || q1 < -PI*0.3 ) && control_state == 0){
-		control_state = 1;
-		alpha = PI/6;
-	}
-	else if( (q1 < PI*0.3 || q1 < -PI*0.3 ) && control_state == 1 ){
-		control_state = 2;
-		alpha = PI/6;
-	}
-	else if(  ( q1 > (PI-region_1) || q1 < (-PI+region_1) ) && (q2 < region_2 && q2 > -region_2) && control_state == 2){
-		control_state = 3;
-	}
-
-	if(control_state == 0){ 			// swing-up controller
-
-	}
-	else if(control_state == 1){ 		// swing-up controller
-
-	}
-	else if(control_state == 2){ 		// balancing controller
-
-	}
-
-
-// if we are in the null controllability region
-
-
-// System Identification test
-
-//	"DB3".Unow := "DB3".kp * "DB3".Enow - "DB3".kp * "DB3".Eprev + "DB3".ki / (2 /
-//	"DB3".Ts) * "DB3".Enow + "DB3".ki / (2 / "DB3".Ts) * "DB3".Eprev + "DB3".Uprev;
 
 
 //
-//	if(q2 > 0.f){
-//		compensate = 1;
-//		torque_prev = output_torque;
-////		output_torque = 2*(q2_steps - error_step_prev) + (q2_steps + error_step_prev) + torque_prev;
-//
-//		if(50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev>30){
-//			output_torque = 30;
-//		}
-//		else{
-//			output_torque = 50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev;
-//		}
-//
-//		duty_cycle = 100 - output_torque;
-//	}
-//	else if(q2 < 0.f){
-//		compensate = 0;
-//		torque_prev = output_torque;
-//
-//		if(50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev < -30){
-//			output_torque = -30;
-//		}
-//		else{
-//			output_torque = 50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev;
-//		}
-//
-//
-////		output_torque = 2*(q2_steps - error_step_prev) + (q2_steps + error_step_prev) + torque_prev;
-//		duty_cycle = output_torque + 100;
-//	}
-//
-//	if(compensate && q2_steps > 0.f){
-//		motor_dir = 0;
-//		HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,motor_dir);
-//		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle );
-//	}
-//
-//	else if (!compensate && q2_steps < 0.f){
-//		motor_dir = 1;
-//		HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,motor_dir);
-//		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle );
-//	}
 
 }
 

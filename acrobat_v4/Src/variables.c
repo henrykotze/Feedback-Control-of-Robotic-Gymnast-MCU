@@ -104,6 +104,32 @@ float PI = 3.14159265359;
 float region_1 = 0;
 float region_2 = 0;
 
+float torque_controller = 0;
+
+float a = 0.0028;
+float b = 1.1843;
+float c = 0.0284;
+float d = 0.0517;
+float e = 0.0567;
+float f = 0.1054;
+float g = 0.0517;
+float h = 0.0284;
+float i = 0.0567;
+float j = 0.1054;
+float k = 0.01;
+float l = 0.01;
+float m = 0.01;
+float n = 0.01;
+float o = 0.01;
+float p = 0.01;
+float q = 0.01;
+float r = 0.01;
+
+float sin_q2 =0;
+float sin_q1 =0;
+float sin_q1_q2 = 0;
+float cos_q2 = 0;
+float cos_q1 = 0;
 
 
 
