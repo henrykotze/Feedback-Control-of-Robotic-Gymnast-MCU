@@ -90,6 +90,14 @@ void read_motor_position(){
 void control_law(){
 //	if in the non-linear control region
 
+
+
+
+
+
+
+
+
 	if( (q1 < PI*0.3 || q1 < -PI*0.3 ) && control_state == 0){
 		control_state = 1;
 		alpha = PI/6;
