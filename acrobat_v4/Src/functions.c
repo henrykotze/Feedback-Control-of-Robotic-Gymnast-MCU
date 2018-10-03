@@ -89,12 +89,12 @@ void read_motor_position(){
 
 void control_law(){
 
-	sin_q1_q2 = sin(q1+q2);
-	sin_q2 = sin(q2);
-	cos_q2 = cos(q2);
-	sin_q1 = sin(q1);
-
-	torque_controller = a*q2dot - a*q1dot + (b*sin_q1_q2) + (c*q1dot*q1dot*sin_q2) + (((d*cos_q2) + e)*((d*cos_q2) + e)/((f*cos_q2) + g) - h)*(58*q2 + (127*q2dot)/10 - (29*PI*atan(q1dot))/5) - (((i*cos_q2) + j)*((k*q1dot) + (l*sin_q1_q2) + (m*sin_q1) - (n*q2dot*q2dot*sin_q2) - (p*q1dot*q2dot*sin_q2)))/((q*cos_q2) + r);
+//	sin_q1_q2 = sin(q1+q2);
+//	sin_q2 = sin(q2);
+//	cos_q2 = cos(q2);
+//	sin_q1 = sin(q1);
+//
+//	torque_controller = a*q2dot - a*q1dot + (b*sin_q1_q2) + (c*q1dot*q1dot*sin_q2) + (((d*cos_q2) + e)*((d*cos_q2) + e)/((f*cos_q2) + g) - h)*(58*q2 + (127*q2dot)/10 - (29*PI*atan(q1dot))/5) - (((i*cos_q2) + j)*((k*q1dot) + (l*sin_q1_q2) + (m*sin_q1) - (n*q2dot*q2dot*sin_q2) - (p*q1dot*q2dot*sin_q2)))/((q*cos_q2) + r);
 
 
 

@@ -107,33 +107,33 @@ extern float PI;						// value for PI
 extern float region_1;					// boundary for q1 to use linear controller
 extern float region_2;					// boundary for q2 to use linear controller
 
-extern float a;
-extern float b;
-extern float c;
-extern float d;
-extern float e;
-extern float f;
-extern float g;
-extern float h;
-extern float i;
-extern float j;
-extern float k;
-extern float l;
-extern float m;
-extern float n;
-extern float o;
-extern float p;
-extern float q;
-extern float r;
-
-
-extern float torque_controller;
-extern float sin_q2;
-extern float sin_q1;
-extern float sin_q1_q2;
-extern float cos_q2;
-extern float cos_q1;
-
+//extern float a;
+//extern float b;
+//extern float c;
+//extern float d;
+//extern float e;
+//extern float f;
+//extern float g;
+//extern float h;
+//extern float i;
+//extern float j;
+//extern float k;
+//extern float l;
+//extern float m;
+//extern float n;
+//extern float o;
+//extern float p;
+//extern float q;
+//extern float r;
+//
+//
+//extern float torque_controller;
+//extern float sin_q2;
+//extern float sin_q1;
+//extern float sin_q1_q2;
+//extern float cos_q2;
+//extern float cos_q1;
+//
 
 
 
