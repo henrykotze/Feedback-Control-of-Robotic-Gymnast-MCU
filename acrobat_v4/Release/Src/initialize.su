@@ -1,0 +1,3 @@
+initialize.c:17:6:startPeripherals	8	static
+initialize.c:37:6:init_variables	16	static
+initialize.c:78:6:lookup_arctan	24	static
