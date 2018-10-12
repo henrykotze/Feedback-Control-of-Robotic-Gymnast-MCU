@@ -65,6 +65,15 @@ void uart_request(){
 			}
 			break;
 
+		case 'C':
+			torque_received = strtok((char*)uart_command_copy, "$");
+			motor_dir = (strtok(NULL, ",\n"));
+
+			controller_torque = 100 - ( ( (float)torque_received)/100+312.52)/15.828;
+			output_torque(motor_dir,controller_torque);
+
+			break;
+
 //		case 'C':	// send q1 values back
 //			if(*(rx_buffer+3) == '1'){
 //			}

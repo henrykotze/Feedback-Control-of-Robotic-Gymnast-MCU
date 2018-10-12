@@ -102,36 +102,37 @@ size_t size_q2 = 0;
 size_t size_torque = 0;
 
 // constants
-const float PI = 3.14159265359;
-const float a = 0.008;
-const float b =  1.0224;
-const float c = 0.024492;
-const float d = 0.024492;
-const float e = 0.025643;
-const float f = 0.048984;
-const float g = 0.0794170;
-const float h = 0.025643;
-const float i = 58.0;
-const float j = 12.7;
-const float k = 60.737;
-const float l = 0.024492;
-const float m = 0.025643;
-const float n = 0.024492;
-const float o = 0.048984;
-const float p  = 1.0224;
-const float q  = 2.2984;
-const float r  = 0.0071;
-const float s = 0.048984;
-const float t = 0.079417;
+//const float PI = 3.14159265359;
+//const float a = 0.008;
+//const float b =  1.0224;
+//const float c = 0.024492;
+//const float d = 0.024492;
+//const float e = 0.025643;
+//const float f = 0.048984;
+//const float g = 0.0794170;
+//const float h = 0.025643;
+//const float i = 58.0;
+//const float j = 12.7;
+//const float k = 60.737;
+//const float l = 0.024492;
+//const float m = 0.025643;
+//const float n = 0.024492;
+//const float o = 0.048984;
+//const float p  = 1.0224;
+//const float q  = 2.2984;
+//const float r  = 0.0071;
+//const float s = 0.048984;
+//const float t = 0.079417;
 
 
-float cos_q2 = 0;
-float sin_q2 = 0;
-float sin_q1_q2 = 0;
+//float cos_q2 = 0;
+//float sin_q2 = 0;
+//float sin_q1_q2 = 0;
 
 
 // Torque
 float controller_torque = 0;
+uint32_t torque_received = 0;
 
 float time_del = 0.008;
 

@@ -135,6 +135,7 @@ extern float sin_q1_q2;
 
 // torque detemermined from controller
 extern float controller_torque;
+extern uint32_t torque_received;
 
 extern float time_del;
 
