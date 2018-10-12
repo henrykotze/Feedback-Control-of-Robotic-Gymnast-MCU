@@ -55,14 +55,14 @@ extern uint8_t encoder_1;				// encoder 1 variable
 extern uint8_t encoder_2;				// encoder 2 variable
 extern uint8_t enable_encoder_reading;	// enable encoder interrupts
 extern uint8_t encoder_flag;			// enable interrupt to set flag
-extern double dir_increment_size; 	// increment size of each rising/falling edge of pulses
+extern float dir_increment_size; 	// increment size of each rising/falling edge of pulses
 
 // Modes of operations
 extern uint8_t simulate;				// Determines whether state variables are supplied through UART or sensors
 extern uint8_t start;					// Start control system
 
 // discretize arctan
-extern double* atan_vals;				// Discretized values of arc tan
+extern float* atan_vals;				// Discretized values of arc tan
 
 //scratchpad variables
 extern char* scratchpad;				// variable to temporary store other variables
@@ -75,15 +75,15 @@ uint8_t enable_data_aquisition;			// allow data aquisition to occur
 extern uint8_t pwm_flag;
 
 // state variables
-extern double q1;						// angular state variable of non-actuated pendulum
-extern double prev_q1;					// previous value of non-actuated pendulum
-extern double prevprev_q1;				// previous previous value of non-actuaded pendulum
-extern double q1dot;					// angular velocity of non-actuated pendulum
+extern float q1;						// angular state variable of non-actuated pendulum
+extern float prev_q1;					// previous value of non-actuated pendulum
+extern float prevprev_q1;				// previous previous value of non-actuaded pendulum
+extern float q1dot;					// angular velocity of non-actuated pendulum
 
-extern double q2;						// angular position state variable of actuated pendulum
-extern double prev_q2;					// previous value of state variable
-extern double prevprev_q2;				// previous previous value of actuaded pendulum
-extern double q2dot;					// angular velocity of actuated pendulum
+extern float q2;						// angular position state variable of actuated pendulum
+extern float prev_q2;					// previous value of state variable
+extern float prevprev_q2;				// previous previous value of actuaded pendulum
+extern float q2dot;					// angular velocity of actuated pendulum
 extern int32_t q2_steps;				// number of steps
 
 
@@ -103,6 +103,39 @@ extern size_t size_q2;					// size of send_q2 variable
 extern size_t size_torque;				// size of send_torque variable
 
 // constants
-extern float PI;						// value for PI
+extern const float PI;						// value for PI
+
+//coefficient from matlab vars_for_mcu.m
+extern const float a;
+extern const float b;
+extern const float c;
+extern const float d;
+extern const float e;
+extern const float f;
+extern const float g;
+extern const float h;
+extern const float i;
+extern const float j;
+extern const float k;
+extern const float l;
+extern const float m;
+extern const float n;
+extern const float o;
+extern const float p;
+extern const float q;
+extern const float r;
+extern const float s;
+extern const float t;
+
+// values computed more than once in control law
+extern float cos_q2;
+extern float sin_q2;
+extern float sin_q1_q2;
+
+// torque detemermined from controller
+extern float controller_torque;
+
+extern float time_del;
+
 
 #endif /* VARIABLES_H_ */

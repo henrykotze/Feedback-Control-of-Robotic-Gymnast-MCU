@@ -6,6 +6,7 @@
  */
 
 #include "variables.h"
+#include "function.h"
 extern TIM_HandleTypeDef htim16;
 extern TIM_HandleTypeDef htim14;
 extern TIM_HandleTypeDef htim3;
@@ -65,7 +66,6 @@ void read_motor_position(){
 
 	prevprev_q2 = prev_q2;
 	prev_q2 = q2;
-	error_step_prev = q2_steps;
 
 	if(HAL_GPIO_ReadPin(DIR_GPIO_Port, DIR_Pin) == 1){ // actuated pendulum is turning clockwise
 		q2_steps -= 1;
@@ -77,99 +77,10 @@ void read_motor_position(){
 	}
 	sprintf(send_q2,"%d", q2_steps);
 
-	//three point backward difference
-//	q2dot = (prevprev_q2 - prev_q2<<2+3*q2)/(2*time); // time variable needs to change
-
 }
-
-/*Creates a discrete representation of the arctan function. The
- * discrete value is contained in a array
- */
-
-
-void control_law(){
-//	if in the non-linear control region
-
-	if( (q1 < PI*0.3 || q1 < -PI*0.3 ) && control_state == 0){
-		control_state = 1;
-		alpha = PI/6;
-	}
-	else if( (q1 < PI*0.3 || q1 < -PI*0.3 ) && control_state == 1 ){
-		control_state = 2;
-		alpha = PI/6;
-	}
-	else if(  ( q1 > (PI-region_1) || q1 < (-PI+region_1) ) && (q2 < region_2 && q2 > -region_2) && control_state == 2){
-		control_state = 3;
-	}
-
-	if(control_state == 0){ 			// swing-up controller
-
-	}
-	else if(control_state == 1){ 		// swing-up controller
-
-	}
-	else if(control_state == 2){ 		// balancing controller
-
-	}
-
-
-// if we are in the null controllability region
-
-
-// System Identification test
-
-//	"DB3".Unow := "DB3".kp * "DB3".Enow - "DB3".kp * "DB3".Eprev + "DB3".ki / (2 /
-//	"DB3".Ts) * "DB3".Enow + "DB3".ki / (2 / "DB3".Ts) * "DB3".Eprev + "DB3".Uprev;
-
-
-//
-//	if(q2 > 0.f){
-//		compensate = 1;
-//		torque_prev = output_torque;
-////		output_torque = 2*(q2_steps - error_step_prev) + (q2_steps + error_step_prev) + torque_prev;
-//
-//		if(50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev>30){
-//			output_torque = 30;
-//		}
-//		else{
-//			output_torque = 50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev;
-//		}
-//
-//		duty_cycle = 100 - output_torque;
-//	}
-//	else if(q2 < 0.f){
-//		compensate = 0;
-//		torque_prev = output_torque;
-//
-//		if(50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev < -30){
-//			output_torque = -30;
-//		}
-//		else{
-//			output_torque = 50*(q2 - prev_q2) + 1*(q2 + prev_q2) + torque_prev;
-//		}
-//
-//
-////		output_torque = 2*(q2_steps - error_step_prev) + (q2_steps + error_step_prev) + torque_prev;
-//		duty_cycle = output_torque + 100;
-//	}
-//
-//	if(compensate && q2_steps > 0.f){
-//		motor_dir = 0;
-//		HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,motor_dir);
-//		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle );
-//	}
-//
-//	else if (!compensate && q2_steps < 0.f){
-//		motor_dir = 1;
-//		HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,motor_dir);
-//		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle );
-//	}
-
-}
-
 
 void output_torque(uint8_t dir, uint8_t duty_cycle){
-	if(duty_cycle > 30){ // safety percaustion to ensure safety
+	if(duty_cycle < 30){ // safety percaustion to ensure safety
 		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 100 ); // stop motor
 
 	}
@@ -177,8 +88,37 @@ void output_torque(uint8_t dir, uint8_t duty_cycle){
 		HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,dir);
 		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle );
 	}
+}
 
+void control_law(){
+//	if in the non-linear control region
+	q2dot = (prevprev_q2 - prev_q2*4+3*q2)/(2*time_del);
+	q1dot = (prevprev_q1 - prev_q1*4+3*q1)/(2*time_del);
+
+	cos_q2 = cos(q2);
+	sin_q2 = sin(q2);
+	sin_q1_q2 = sin(q1+q2);
+
+	controller_torque = a*q2dot - a*q1dot + b*sin_q1_q2 + c*q1dot*q1dot\
+			+ ((d*cos_q2 + e)*(d*cos_q2 + e)/(f*cos_q2 + g) - h)*(i*q2\
+			+ j*q2dot - k*(float)atan(q1dot)) - (1.0*(l*cos_q2 + \
+			m)*(-n*sin_q2*q2dot*q2dot - o*q1dot*sin_q2*q2dot \
+			+ p*sin_q1_q2 + q*(float)sin(q1) + r))/(s*cos_q2 + t);
+
+	if(controller_torque > 0){
+		motor_dir = 1;
+	}
+	else {
+		motor_dir = 0;
+	}
+	output_torque(motor_dir, 100 -(controller_torque/50+312.52)/15.828);
+
+
+
+// if we are in the null controllability region
 
 
 
 }
+
+

@@ -9,7 +9,7 @@
 #include "variables.h"
 
 extern UART_HandleTypeDef huart1;
-
+extern TIM_HandleTypeDef htim14;
 void user_main(){
 
 	if(uart_flag == 1){
@@ -29,6 +29,7 @@ void user_main(){
 		if(adc_flag == 1){
 			adc_flag = 0;
 			get_current_potentiometer();
+			control_law();
 		}
 	}
 
@@ -47,7 +48,8 @@ void user_main(){
 		HAL_UART_Transmit_DMA(&huart1, ((uint8_t*)data_buffer),strlen((char*)data_buffer));
 	}
 
-	torque_output();
+//	time = htim14.Instance->CNT;
+
 
 }
 

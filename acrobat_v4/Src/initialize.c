@@ -53,8 +53,8 @@ void init_variables(){
 	ADC_buffer = (uint32_t*)malloc(2*sizeof(uint32_t));
 	memset(ADC_buffer,0x00,2);
 
-	atan_vals = (double*)malloc(100*sizeof(double));
-	memset(atan_vals,0x00,100);
+	//atan_vals = (float*)malloc(100*sizeof(double));
+	//memset(atan_vals,0x00,100);
 
 	scratchpad = (char*)malloc(5*sizeof(char));
 	memset(scratchpad,0x00,5);
@@ -75,9 +75,4 @@ void init_variables(){
 
 }
 
-void discretize_arctan(){
-	for(int i = 0; i < 100; i++){
-		atan_vals[i] = atan(i/100);
-	}
-}
 
