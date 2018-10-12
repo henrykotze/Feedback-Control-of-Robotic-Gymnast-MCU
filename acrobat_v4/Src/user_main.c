@@ -29,7 +29,7 @@ void user_main(){
 		if(adc_flag == 1){
 			adc_flag = 0;
 			get_current_potentiometer();
-			control_law();
+			//control_law();
 		}
 	}
 
