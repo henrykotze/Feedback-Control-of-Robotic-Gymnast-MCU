@@ -41,7 +41,7 @@ void uart_request(){
 		rx_buffer_cntr = 0;
 	}
 	if(rx_buffer[0] == '$' && rx_buffer[rx_buffer_cntr-1] == '\n' && rx_buffer_cntr > 2){
-
+		rx_buffer_copy = rx_buffer;
 		switch(rx_buffer[1]){
 		case 'X':	// stop all operation
 			__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 0);
@@ -65,13 +65,13 @@ void uart_request(){
 			}
 			break;
 
-		case 'C':
-			torque_received = strtok((char*)uart_command_copy, "$");
+		case 'T':
+			torque_received = strtok((char*)rx_buffer_copy, "$T,");
 			motor_dir = (strtok(NULL, ",\n"));
 
 			controller_torque = 100 - ( ( (float)torque_received)/100+312.52)/15.828;
 			output_torque(motor_dir,controller_torque);
-
+			receive_send = 1;
 			break;
 
 //		case 'C':	// send q1 values back

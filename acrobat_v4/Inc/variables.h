@@ -9,7 +9,7 @@
 #define VARIABLES_H_
 
 #include <string.h>
-//#include <stdlib.h>
+#include <stdlib.h>
 #include "main.h"
 #include "stm32f0xx_hal.h"
 #include <math.h>
@@ -17,6 +17,7 @@
 // UART COMMUNICATIONS
 extern uint8_t uart_flag;			// interrupt flag
 extern uint8_t* rx_buffer;			// buffer containing received string
+extern uint8_t* rx_buffer_copy;		// rx_buffer copy
 extern uint8_t rx_byte;				// immediate received byte;
 extern uint8_t* data_buffer;		// buffer containing state-space variables
 extern uint8_t rx_buffer_cntr;		// counter of the rx_buffer
@@ -138,6 +139,8 @@ extern float controller_torque;
 extern uint32_t torque_received;
 
 extern float time_del;
+
+extern uint8_t receive_send;
 
 
 #endif /* VARIABLES_H_ */

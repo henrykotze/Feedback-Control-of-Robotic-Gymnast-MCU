@@ -18,19 +18,16 @@ void user_main(){
 
 	}
 
-	if(enable_encoder_reading == 1){
-		if(encoder_flag == 1){
-			encoder_flag = 0;
-			read_motor_position();
-		}
+
+	if(encoder_flag == 1){
+		encoder_flag = 0;
+		read_motor_position();
 	}
 
-	if(enable_ADC_interrupt == 1){
-		if(adc_flag == 1){
-			adc_flag = 0;
-			get_current_potentiometer();
-			//control_law();
-		}
+
+	if(adc_flag == 1){
+		adc_flag = 0;
+		get_current_potentiometer();
 	}
 
 
@@ -43,9 +40,10 @@ void user_main(){
 		}
 	}
 
-	if(send_data_flag && enable_data_aquisition){
+	if(send_data_flag && enable_data_aquisition && receive_send){
 		send_data_flag = 0;
 		HAL_UART_Transmit_DMA(&huart1, ((uint8_t*)data_buffer),strlen((char*)data_buffer));
+		receive_send = 0;
 	}
 
 //	time = htim14.Instance->CNT;
