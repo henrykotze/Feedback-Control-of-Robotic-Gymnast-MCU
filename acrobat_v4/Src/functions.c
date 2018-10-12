@@ -37,8 +37,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		adc_flag = 1;
 		data_flag = 1;
 	}
-//	data_flag = 1;
-//	adc_flag = 1;
+
 }
 
 void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim){
