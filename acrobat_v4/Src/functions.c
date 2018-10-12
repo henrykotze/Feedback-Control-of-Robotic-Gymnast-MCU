@@ -6,7 +6,6 @@
  */
 
 #include "variables.h"
-#include "function.h"
 extern TIM_HandleTypeDef htim16;
 extern TIM_HandleTypeDef htim14;
 extern TIM_HandleTypeDef htim3;
@@ -77,6 +76,9 @@ void read_motor_position(){
 	}
 	sprintf(send_q2,"%d", q2_steps);
 
+	//three point backward difference
+//	q2dot = (prevprev_q2 - prev_q2<<2+3*q2)/(2*time); // time variable needs to change
+
 }
 
 void output_torque(uint8_t dir, uint8_t duty_cycle){
@@ -94,16 +96,15 @@ void control_law(){
 //	if in the non-linear control region
 	q2dot = (prevprev_q2 - prev_q2*4+3*q2)/(2*time_del);
 	q1dot = (prevprev_q1 - prev_q1*4+3*q1)/(2*time_del);
-
+//	time_del = htim14.Instance->CNT;
 	cos_q2 = cos(q2);
 	sin_q2 = sin(q2);
 	sin_q1_q2 = sin(q1+q2);
 
-	controller_torque = a*q2dot - a*q1dot + b*sin_q1_q2 + c*q1dot*q1dot\
-			+ ((d*cos_q2 + e)*(d*cos_q2 + e)/(f*cos_q2 + g) - h)*(i*q2\
-			+ j*q2dot - k*(float)atan(q1dot)) - (1.0*(l*cos_q2 + \
-			m)*(-n*sin_q2*q2dot*q2dot - o*q1dot*sin_q2*q2dot \
-			+ p*sin_q1_q2 + q*(float)sin(q1) + r))/(s*cos_q2 + t);
+	controller_torque = a*q2dot - a*q1dot + b*sin_q1_q2 + c*(q1dot*q1dot)*sin_q2 + \
+	((d*((cos_q2 + e)*(cos_q2 + e)))/(f*cos_q2 + g) - h)*(i*q2 + j*q2dot - k*atan(q1dot)) - \
+	(1.0*(l*cos_q2 + m)*(-n*sin_q2*(q2dot*q2dot) - o*q1dot*sin_q2*q2dot + p*sin_q1_q2 \
+	+ q*(float)sin(q1) + r))/(s*cos_q2 + t);
 
 	if(controller_torque > 0){
 		motor_dir = 1;
@@ -111,7 +112,7 @@ void control_law(){
 	else {
 		motor_dir = 0;
 	}
-	output_torque(motor_dir, 100 -(controller_torque/50+312.52)/15.828);
+	output_torque(motor_dir, 100 -(controller_torque+312.52)/15.828);
 
 
 

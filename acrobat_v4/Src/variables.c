@@ -25,9 +25,10 @@ uint8_t send_data_flag = 1;
 uint32_t* ADC_buffer = NULL;
 uint32_t sampledCurrent = 0;
 uint32_t sampledPotentiometer = 0;
+uint32_t sampledPotentiometer_2 = 0;
 uint8_t enable_ADC_interrupt = 1;
 uint8_t adc_flag = 0;
-uint32_t startval_sampledPotentiometer = 1211;
+uint32_t startval_sampledPotentiometer = 1200;
 
 // Controlling torque of motor
 uint8_t duty_cycle = 0;
@@ -69,6 +70,7 @@ uint8_t pwm_flag = 0;
 
 // measured state variables
 float q1 = 0;
+float q1_new = 0;
 float prev_q1 = 0;
 float prevprev_q1 = 0;
 float q1dot = 0;

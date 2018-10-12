@@ -13,11 +13,14 @@ void get_current_potentiometer(){
 	sampledCurrent = ADC_buffer[1];
 	sampledPotentiometer = ADC_buffer[0];
 
-
-
 	prevprev_q1 = prev_q1;
 	prev_q1 = q1;
-	q1 = ((int32_t)sampledPotentiometer-(int32_t)startval_sampledPotentiometer)*0.00153f;
+	q1_new = ((int32_t)sampledPotentiometer-(int32_t)startval_sampledPotentiometer)*0.00153f;
+
+	if (q1_new - prev_q1 > 0.05 || prev_q1 - q1_new > 0.05){
+		q1 = q1_new;
+	}
+
 	torque = (sampledCurrent<<9);
 
 

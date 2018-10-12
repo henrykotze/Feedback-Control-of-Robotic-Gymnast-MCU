@@ -9,7 +9,7 @@
 #define VARIABLES_H_
 
 #include <string.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 #include "main.h"
 #include "stm32f0xx_hal.h"
 #include <math.h>
@@ -75,6 +75,7 @@ uint8_t enable_data_aquisition;			// allow data aquisition to occur
 extern uint8_t pwm_flag;
 
 // state variables
+extern float q1_new;
 extern float q1;						// angular state variable of non-actuated pendulum
 extern float prev_q1;					// previous value of non-actuated pendulum
 extern float prevprev_q1;				// previous previous value of non-actuaded pendulum
