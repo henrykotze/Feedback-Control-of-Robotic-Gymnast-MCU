@@ -37,7 +37,7 @@ void uart_request(){
 	if(*rx_buffer == '$'){
 		rx_buffer_cntr += 1;
 	}
-	if(rx_buffer_cntr > 10){
+	if(rx_buffer_cntr > 15){
 		rx_buffer_cntr = 0;
 	}
 	if(rx_buffer[0] == '$' && rx_buffer[rx_buffer_cntr-1] == '\n' && rx_buffer_cntr > 2){
@@ -70,8 +70,8 @@ void uart_request(){
 		case 'T':
 			torque_received = strtok((char*)rx_buffer_copy, "$T,");
 			motor_dir = (strtok(NULL, ",\r\n"));
-
-			//controller_torque = 100 - ( ( (float)torque_received)/100+312.52f)/15.828f;
+			controller_torque = 100 - ((float)strtol(torque_received,NULL,10)+315.52f)/15.828f;
+			//controller_torque = 100 - ( (float)strtol(torque_received,NULL,10)/100+312.52f)/15.828f;
 			//output_torque(motor_dir,controller_torque);
 			receive_send = 1;
 			break;
