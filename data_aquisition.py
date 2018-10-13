@@ -180,7 +180,7 @@ while True:#making a loop#finishing the loop
         sin_q2 = math.sin(q2)           # sin(q2)
         sin_q1_q2 = math.sin(q1+q2)     # sin(q2+q1)
         cos_q2 = math.cos(q2)           # cos(q2)
-        atan_q1dot = math.atan(q1dot)         # atan(q2)
+        atan_q1dot = math.atan(q1dot)         # atan(q1dot)
          
         # Non-linear control: Determined in vars_for_mcu.m 
 
@@ -190,30 +190,34 @@ while True:#making a loop#finishing the loop
         elif(controller_state == 1 and (q1 > PI/1.5 or q1 < -PI/1.5)):
             controller_state = 2
             alpha = PI/20  
+        elif(controller_state == 2 and (q1 > PI/0.4 or q1 < -PI/0.4)):
+            controller_state = 3
 
 
         if(controller_state == 0):# alpha = pi/3
-            torque = 0.008*q2dot + 1.0224*sin_q1_q2 + 0.024492*q1dot^2*sin_q2 + ((0.024492*cos_q2\
-            + 0.025643)^2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2 + 12.7*q2dot - \
+            torque = 0.008*q2dot + 1.0224*sin_q1_q2 + 0.024492*q1dot**2*sin_q2 + ((0.024492*cos_q2\
+            + 0.025643)**2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2 + 12.7*q2dot - \
             58.0*alpha*atan_q1dot) - (1.0*(0.024492*cos_q2 + 0.025643)*(-\
-            0.024492*sin_q2*q2dot^2 - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 \
+            0.024492*sin_q2*q2dot**2 - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 \
             + 2.2984*sin_q1 + 0.0071*np.sign(q1dot)))/(0.048984*cos_q2 + 0.079417)
  
 
-        elif(controller_state == 1): # alpha = pi/10 To be implemented
-             torque = 0.008*q2dot + 1.0224*sin_q1_q2 + 0.024492*q1dot^2*sin_q2 + ((0.024492*cos_q2\
-            + 0.025643)^2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2 + 12.7*q2dot - \
+        elif(controller_state == 1): # alpha = pi/10
+             torque = 0.008*q2dot + 1.0224*sin_q1_q2 + 0.024492*q1dot**2*sin_q2 + ((0.024492*cos_q2\
+            + 0.025643)**2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2 + 12.7*q2dot - \
             58.0*alpha*atan_q1dot) - (1.0*(0.024492*cos_q2 + 0.025643)*(-\
-            0.024492*sin_q2*q2dot^2 - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 \
+            0.024492*sin_q2*q2dot**2 - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 \
             + 2.2984*sin_q1 + 0.0071*np.sign(q1dot)))/(0.048984*cos_q2 + 0.079417)
 
-        elif(controller_state == 2): # alpha = pi/20 To be implemented
-            torque = 0.008*q2dot + 1.0224*sin_q1_q2 + 0.024492*q1dot^2*sin_q2 + ((0.024492*cos_q2\
-            + 0.025643)^2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2 + 12.7*q2dot - \
+        elif(controller_state == 2): # alpha = pi/20 
+            torque = 0.008*q2dot + 1.0224*sin_q1_q2 + 0.024492*q1dot**2*sin_q2 + ((0.024492*cos_q2\
+            + 0.025643)**2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2 + 12.7*q2dot - \
             58.0*alpha*atan_q1dot) - (1.0*(0.024492*cos_q2 + 0.025643)*(-\
-            0.024492*sin_q2*q2dot^2 - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 \
+            0.024492*sin_q2*q2dot**2 - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 \
             + 2.2984*sin_q1 + 0.0071*np.sign(q1dot)))/(0.048984*cos_q2 + 0.079417)
 
+        elif(controller_state == 3): # Linear Controller is Active
+            pass
 
 
  
