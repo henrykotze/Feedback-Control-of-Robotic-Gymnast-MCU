@@ -25,9 +25,6 @@ WORD_LENGHT=serial.EIGHTBITS   # OPTIONS: FIVEBITS,SIXBITS,SEVENBITS,EIGHTBITS
 PARITY=serial.PARITY_NONE      # OPTIONS: PARITY_NONE, PARITY_EVEN, PARITY_ODD, PARITY_MARK, PARITY_SPACE
 STOP_BITS=serial.STOPBITS_ONE  # OPTIONS: STOPBITS_ONE, STOPBITS_ONE_POINT_FIVE, STOPBITS_TWO
 
-
-
-
 # Setting up chosen settings
 ser = serial.Serial(PORT,BUADRATE,WORD_LENGHT,PARITY,STOP_BITS,timeout=100)
 ser.close()
@@ -77,6 +74,14 @@ q1_increment_size = float(2*math.pi/4095)
 # sampled value measured at q1 = 0 rad
 zero_potentiometer = float(1280)
 
+#discritise sin cos and atan
+discrete_sin = []
+discrete_cos = []
+discrete_atan = []
+for i in range(-4000,4001):
+    discrete_sin.insert(i+4000,math.sin( ((2*math.pi)/4000)*i ) )
+    discrete_cos.insert(i+4000,math.sin( ((2*math.pi)/4000)*i ) )
+    discrete_atan.insert(i+4000,math.sin( ((2*math.pi)/4000)*i ) )
 
 
 filename = input('filename to save data: ')
