@@ -8,16 +8,19 @@
 import serial
 # importing package that listen to keyboard inputs
 import msvcrt
-
 #importing package for math function
 import math
+#importing package for matrix operations
+import numpy as np
+
+
 #LINUX EXAMPLE
 #PORTS="\\dev\\USBTTY1"
 # WINDOWS EXAMPLE
 PORT = 'COM11'
 
 # UART VARIABLES
-BUADRATE=230400
+BUADRATE=115200
 WORD_LENGHT=serial.EIGHTBITS   # OPTIONS: FIVEBITS,SIXBITS,SEVENBITS,EIGHTBITS
 PARITY=serial.PARITY_NONE      # OPTIONS: PARITY_NONE, PARITY_EVEN, PARITY_ODD, PARITY_MARK, PARITY_SPACE
 STOP_BITS=serial.STOPBITS_ONE  # OPTIONS: STOPBITS_ONE, STOPBITS_ONE_POINT_FIVE, STOPBITS_TWO
@@ -36,8 +39,8 @@ if(not ser.is_open):
 send_data = ''
 header = "time,q1,q2,tau\n"
 stop_experiment = "$X\n"
-ack = '\n'
-
+ack = '\r\n'
+state_variables = []
 
 q1 = float(0)
 q2 = float(0)
@@ -57,7 +60,7 @@ sin_q1_q2 = float(0) # sin(q2+q1)
 cos_q2 = float(0)    # cos(q2)
 
 # time difference between data being sent
-delta_t = float(0.001)
+delta_t = float(0.004)
 
 # string to send torque to be outputted
 send_torque = "$T"
@@ -69,7 +72,7 @@ tau_measured = 0
 q2_increment_size = float(1/896)
 
 # sampled value measured at q1 = 0 rad
-zero_potentiometer = 1600
+zero_potentiometer = float(1200)
 
 
 
@@ -81,7 +84,7 @@ file_.write(description)
 file_.write(header)
 
 
-while(send_data != '$B,1\n'): # if send_data = $B,1\r\n the experiment starts and data are streamed
+while(send_data != '$B,1\r\n'): # if send_data = $B,1\r\n the experiment starts and data are streamed
     send_data = input('Enter Command to Send: ')
     if(send_data == '$B,1\n'):
         break
@@ -90,19 +93,19 @@ while(send_data != '$B,1\n'): # if send_data = $B,1\r\n the experiment starts an
 
 
 
-    if(send_data == '$A\n'):      # Testing whether UART comms are working
+    if(send_data == '$A\r\n'):      # Testing whether UART comms are working
         # Expect return_data: Feedback Control Of Robotic Gymnast
         ser.write(send_data.encode('utf-8'))
         return_data = ser.read_until('\n'.encode('utf-8'))
         print('ACK FROM DEVICE: ' + return_data.decode('utf-8'))
     
-    elif(send_data == 'close\n'):    # Enable data aquisition of shaft angle  
+    elif(send_data == 'close\r\n'):    # Enable data aquisition of shaft angle  
         ser.close()
 
-    elif(send_data == '$B,1\n'):    # Enable data aquisition of shaft angle   
+    elif(send_data == '$B,1\r\n'):    # Enable data aquisition of shaft angle   
         ser.write(send_data.encode('utf-8'))
-        return_data = ser.read_until('\n'.encode('utf-8'))
-        print('ACK FROM DEVICE: ' + return_data.decode('utf-8'))
+        #return_data = ser.read_until('\n'.encode('utf-8'))
+        #print('ACK FROM DEVICE: ' + return_data.decode('utf-8'))
 
 
         
@@ -112,14 +115,20 @@ while(send_data != '$B,1\n'): # if send_data = $B,1\r\n the experiment starts an
 print('Receiving data over UART')    
 while True:#making a loop#finishing the loop
     return_data = (ser.read_until('\n'.encode('utf-8'))).decode('utf-8')
-    state_variables = return_data.split(",");
+    state_variables = return_data.split(",")
 
 
     if(len(state_variables)) == 4:
-        print(len(state_variables))
-        print(state_variables)
-        q1 = (float(state_variables[2])-zero_potentiometer)*0.00153
-        q2 = (float(state_variables[3])*q2_increment_size)
+       # print(len(state_variables))
+       # print(state_variables)
+
+        #q1 = state_variables[1]
+        #q2 = state_variables[2]
+        q1 = (float(state_variables[1])-zero_potentiometer)*0.00153
+        q2 = (float(state_variables[2])*q2_increment_size)
+
+        print("q1: " + str(q1))
+        print("q2: " + str(q2))
 
         # assign previous values
         q1prev = q1
@@ -144,17 +153,17 @@ while True:#making a loop#finishing the loop
         - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 + 2.2984*sin_q1 + 0.0071))/(0.048984*cos_q2\
         + 0.079417)
 
-        send_torque = "$T,"+str(int(1000*torque))
-        print(send_torque)
-        ser.write(send_torque.encode('utf-8'))
+        if(int(np.sign(torque))>0): # Torque is positive
+            send_torque = "$T,"+str(int(1000*torque)) + ",1" + ack
+            print(send_torque)
+            ser.write(send_torque.encode('utf-8'))
 
+        else: # Torque is negative
+            send_torque = "$T,"+str(int(-1000*torque)) + ",0" + ack
+            print(send_torque)
+            ser.write(send_torque.encode('utf-8'))
 
-
-
-   
- 
-
-
+    
     file_.write(return_data)
 
     if msvcrt.kbhit(): # The press of any key will results entering if

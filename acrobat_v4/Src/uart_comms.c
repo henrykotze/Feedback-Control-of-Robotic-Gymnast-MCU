@@ -57,9 +57,10 @@ void uart_request(){
 
 		case 'B':	// enable data aquisition to occur
 			if(*(rx_buffer+3) == '1'){
-				HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
-				enable_data_aquisition = 1;
 				receive_send = 1;
+				//HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
+				enable_data_aquisition = 1;
+
 			}
 			else if(rx_buffer[3] == '0'){
 				enable_data_aquisition = 0;
