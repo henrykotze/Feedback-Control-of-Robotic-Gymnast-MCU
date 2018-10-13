@@ -39,6 +39,10 @@ stop_experiment = "$X\n"
 ack = '\r\n'
 state_variables = []
 
+# Value for PI
+PI = math.pi
+
+
 q1 = float(0)
 q2 = float(0)
 q1dot = float(0)
@@ -66,10 +70,10 @@ send_torque = "$T"
 tau_measured = 0
 
 # Incremental size for encoder
-q2_increment_size = float(2*math.pi/896)
+q2_increment_size = float(2*PI/896)
 
 # incremental size for potentiometer
-q1_increment_size = float(2*math.pi/4095)
+q1_increment_size = float(2*PI/4095)
 
 # sampled value measured at q1 = 0 rad
 zero_potentiometer = float(1280)
@@ -79,12 +83,18 @@ discrete_sin = []
 discrete_cos = []
 discrete_atan = []
 for i in range(-4000,4001):
-    discrete_sin.insert(i+4000,math.sin( ((2*math.pi)/4000)*i ) )
-    discrete_cos.insert(i+4000,math.sin( ((2*math.pi)/4000)*i ) )
-    discrete_atan.insert(i+4000,math.sin( ((2*math.pi)/4000)*i ) )
+    discrete_sin.insert(i+4000,math.sin( ((2*PI)/4000)*i ) )
+    discrete_cos.insert(i+4000,math.sin( ((2*PI)/4000)*i ) )
+    discrete_atan.insert(i+4000,math.sin( ((2*PI)/4000)*i ) )
 
 # K matrix
 K = [1, 2, 3, 4]
+
+# Controller State
+controller_state = 0
+
+# alpha value
+alpha = PI/4
 
 
 filename = input('filename to save data: ')
@@ -170,13 +180,40 @@ while True:#making a loop#finishing the loop
         sin_q2 = math.sin(q2)           # sin(q2)
         sin_q1_q2 = math.sin(q1+q2)     # sin(q2+q1)
         cos_q2 = math.cos(q2)           # cos(q2)
-        atan_q2 = math.atan(q2)         # atan(q2)
+        atan_q1dot = math.atan(q1dot)         # atan(q2)
          
         # Non-linear control: Determined in vars_for_mcu.m 
-        torque = 0.008*q2dot + 1.0224*sin_q1_q2 + 0.024492*q1dot**2*sin_q2 + ((0.024492*cos_q2 \
-        + 0.025643)**2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2 + 12.7*q2dot - 60.737*atan_q2)\
-        - (1.0*(0.024492*cos_q2 + 0.025643)*(- 0.024492*sin_q2*q2dot**2 - 0.048984*q1dot*sin_q2*q2dot\
-        + 1.0224*sin_q1_q2 + 2.2984*sin_q1 + 0.0071*np.sign(q1dot)))/(0.048984*cos_q2 + 0.079417)
+
+        if(controller_state == 0 and (q1 > PI/2 or q1 < -PI/2) ):
+            controller_state = 1
+            alpha = PI/10
+        elif(controller_state == 1 and (q1 > PI/1.5 or q1 < -PI/1.5)):
+            controller_state = 2
+            alpha = PI/20  
+
+
+        if(controller_state == 0):# alpha = pi/3
+            torque = 0.008*q2dot + 1.0224*sin_q1_q2 + 0.024492*q1dot^2*sin_q2 + ((0.024492*cos_q2\
+            + 0.025643)^2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2 + 12.7*q2dot - \
+            58.0*alpha*atan_q1dot) - (1.0*(0.024492*cos_q2 + 0.025643)*(-\
+            0.024492*sin_q2*q2dot^2 - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 \
+            + 2.2984*sin_q1 + 0.0071*np.sign(q1dot)))/(0.048984*cos_q2 + 0.079417)
+ 
+
+        elif(controller_state == 1): # alpha = pi/10 To be implemented
+             torque = 0.008*q2dot + 1.0224*sin_q1_q2 + 0.024492*q1dot^2*sin_q2 + ((0.024492*cos_q2\
+            + 0.025643)^2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2 + 12.7*q2dot - \
+            58.0*alpha*atan_q1dot) - (1.0*(0.024492*cos_q2 + 0.025643)*(-\
+            0.024492*sin_q2*q2dot^2 - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 \
+            + 2.2984*sin_q1 + 0.0071*np.sign(q1dot)))/(0.048984*cos_q2 + 0.079417)
+
+        elif(controller_state == 2): # alpha = pi/20 To be implemented
+            torque = 0.008*q2dot + 1.0224*sin_q1_q2 + 0.024492*q1dot^2*sin_q2 + ((0.024492*cos_q2\
+            + 0.025643)^2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2 + 12.7*q2dot - \
+            58.0*alpha*atan_q1dot) - (1.0*(0.024492*cos_q2 + 0.025643)*(-\
+            0.024492*sin_q2*q2dot^2 - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 \
+            + 2.2984*sin_q1 + 0.0071*np.sign(q1dot)))/(0.048984*cos_q2 + 0.079417)
+
 
 
  
