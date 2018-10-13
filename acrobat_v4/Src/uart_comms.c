@@ -71,35 +71,34 @@ void uart_request(){
 			torque_received = strtok((char*)rx_buffer_copy, "$T,");
 			motor_dir = (strtok(NULL, ",\r\n"));
 			controller_torque = 100 - ((float)strtol(torque_received,NULL,10)+315.52f)/15.828f;
-			//controller_torque = 100 - ( (float)strtol(torque_received,NULL,10)/100+312.52f)/15.828f;
-			//output_torque(motor_dir,controller_torque);
+			output_torque((*motor_dir-48),controller_torque);
 			receive_send = 1;
 			break;
 //
-//		case 'F':	// Changing the duty-cycle output or control speed of motor
-////			data_buffer = rx_buffer;
-//			memcpy(scratchpad, rx_buffer+3, strlen((char*)rx_buffer)-4);
+		case 'F':	// Changing the duty-cycle output or control speed of motor
+//			data_buffer = rx_buffer;
+			memcpy(scratchpad, rx_buffer+3, strlen((char*)rx_buffer)-4);
+
+			//output_torque(motor_dir, duty_cycle);
+			duty_cycle = (uint8_t)strtol(scratchpad, (char**)NULL,10);
+			__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle);
+
+
+			HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
+			break;
 //
-//			//output_torque(motor_dir, duty_cycle);
-//			duty_cycle = (uint8_t)strtol(scratchpad, (char**)NULL,10);
-//			__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle);
-//
-//
-//			HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
-//			break;
-//
-//		case 'I': // Change direction of motor
-//			if(rx_buffer[3] == '1'){
-//				motor_dir = 1;
-//				output_torque(motor_dir, duty_cycle);
-//			}
-//			else if(rx_buffer[3] == '0'){
-//				motor_dir = 0;
-//				output_torque(motor_dir, duty_cycle);
-//			}
-//			HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
-//
-//			break;
+		case 'I': // Change direction of motor
+			if(rx_buffer[3] == '1'){
+				motor_dir = 1;
+				output_torque(motor_dir, duty_cycle);
+			}
+			else if(rx_buffer[3] == '0'){
+				motor_dir = 0;
+				output_torque(motor_dir, duty_cycle);
+			}
+			HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
+
+			break;
 
 			//memset(rx_buffer,0x00, 16);
 			//memset(rx_buffer_copy,0x00, 16);

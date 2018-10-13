@@ -30,13 +30,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
-	if(htim->Instance == htim16.Instance){
-		send_data_flag = 1;
-	}
-	else if(htim->Instance == htim14.Instance){
+//	if(htim->Instance == htim16.Instance){
+//		send_data_flag = 1;
+//	}
+//	else if(htim->Instance == htim14.Instance){
 		adc_flag = 1;
 		data_flag = 1;
-	}
+//	}
 
 }
 
@@ -82,14 +82,14 @@ void read_motor_position(){
 }
 
 void output_torque(uint8_t dir, uint8_t duty_cycle){
-	if(duty_cycle < 30){ // safety percaustion to ensure safety
-		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 100 ); // stop motor
-
-	}
-	else{
+//	if(duty_cycle < 30){ // safety percaustion to ensure safety
+//		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 100 ); // stop motor
+//
+//	}
+//	else{
 		HAL_GPIO_WritePin(MOTOR_DIR_GPIO_Port,MOTOR_DIR_Pin,dir);
 		__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, duty_cycle );
-	}
+//	}
 }
 
 void control_law(){

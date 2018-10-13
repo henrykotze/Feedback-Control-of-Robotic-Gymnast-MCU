@@ -10,8 +10,14 @@
 #define R 155		// Resistor chosen in H-brigde circuit to transform proportional current to a voltage
 
 void get_current_potentiometer(){
+
+	sampledPotentiometer_prev = sampledPotentiometer;
 	sampledCurrent = ADC_buffer[1];
-	sampledPotentiometer = ADC_buffer[0];
+
+	if( (int8_t)(sampledPotentiometer_prev - *ADC_buffer) > 15 || (int8_t)(*ADC_buffer - sampledPotentiometer_prev) > 15 ){
+		sampledPotentiometer = ADC_buffer[0];
+	}
+
 
 	//prevprev_q1 = prev_q1;
 	//prev_q1 = q1;

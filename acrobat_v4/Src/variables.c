@@ -26,6 +26,7 @@ uint8_t send_data_flag = 1;
 uint32_t* ADC_buffer = NULL;
 uint32_t sampledCurrent = 0;
 uint32_t sampledPotentiometer = 0;
+uint32_t sampledPotentiometer_prev = 0;
 uint32_t sampledPotentiometer_2 = 0;
 uint8_t enable_ADC_interrupt = 1;
 uint8_t adc_flag = 0;
@@ -78,7 +79,7 @@ size_t size_torque = 0;
 
 
 // Torque
-float controller_torque = 0;
+uint8_t controller_torque = 0;
 char* torque_received = 0;
 uint8_t  torque=0;
 

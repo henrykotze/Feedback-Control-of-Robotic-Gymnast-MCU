@@ -33,6 +33,7 @@ extern uint8_t send_data_flag;		// variable that gets sets to send data across u
 extern uint32_t* ADC_buffer;			// buffer containing sampled values
 extern uint32_t sampledCurrent;			// Sampled value of current through motor
 extern uint32_t sampledPotentiometer;	// sampled value of potentiometer
+extern uint32_t sampledPotentiometer_prev; // previous value of potentiometer
 extern uint8_t enable_ADC_interrupt;	// enable the interrupt for the ADC
 extern uint8_t adc_flag;				// interrupt sets the adc_flag
 extern uint32_t startval_sampledPotentiometer; // first sampled value will be 0-reference angle
@@ -135,7 +136,7 @@ extern float sin_q2;
 extern float sin_q1_q2;
 
 // torque detemermined from controller
-extern float controller_torque;
+extern uint8_t controller_torque;
 extern char* torque_received;
 
 extern float time_del;

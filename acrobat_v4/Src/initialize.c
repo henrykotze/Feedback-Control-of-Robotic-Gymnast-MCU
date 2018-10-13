@@ -20,7 +20,7 @@ void startPeripherals(){
 	HAL_ADC_Start_DMA(&hadc, ADC_buffer, 2);			// Start to capture the ADC with DMA
 
 	HAL_TIM_Base_Start_IT(&htim14);						// Timer responsible for time-keeping and triggers system state to be send
-	HAL_TIM_Base_Start_IT(&htim16);						// Timer responsible for time-keeping and triggers system state to be send
+	//HAL_TIM_Base_Start_IT(&htim16);						// Timer responsible for time-keeping and triggers system state to be send
 	HAL_TIM_PWM_Start_IT(&htim3,TIM_CHANNEL_2);			// Start the Timer Module with PWM
 	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0);	// Set duty cycle of PWM signal to 0%
 	HAL_UART_Receive_IT(&huart1, &rx_byte, 1);			// Set interrupt to receive byte over UART

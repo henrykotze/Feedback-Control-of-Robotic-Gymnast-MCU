@@ -15,7 +15,7 @@ import numpy as np
 
 
 #LINUX EXAMPLE
-#PORTS="\\dev\\USBTTY1"
+#PORTS="\dev\\USBTTY1"
 # WINDOWS EXAMPLE
 PORT = 'COM11'
 
@@ -60,7 +60,7 @@ sin_q1_q2 = float(0) # sin(q2+q1)
 cos_q2 = float(0)    # cos(q2)
 
 # time difference between data being sent
-delta_t = float(0.004)
+delta_t = float(0.016)
 
 # string to send torque to be outputted
 send_torque = "$T"
@@ -69,10 +69,13 @@ send_torque = "$T"
 tau_measured = 0
 
 # Incremental size for encoder
-q2_increment_size = float(1/896)
+q2_increment_size = float(2*math.pi/896)
+
+# incremental size for potentiometer
+q1_increment_size = float(2*math.pi/4095)
 
 # sampled value measured at q1 = 0 rad
-zero_potentiometer = float(1200)
+zero_potentiometer = float(1280)
 
 
 
@@ -115,31 +118,44 @@ while(send_data != '$B,1\r\n'): # if send_data = $B,1\r\n the experiment starts 
 print('Receiving data over UART')    
 while True:#making a loop#finishing the loop
     return_data = (ser.read_until('\n'.encode('utf-8'))).decode('utf-8')
+    file_.write(return_data)
     state_variables = return_data.split(",")
 
+    q1prev = q1
+    q1prevprev = q1prev
+    q2prev = q2
+    q2prevprev = q2prev
 
     if(len(state_variables)) == 4:
        # print(len(state_variables))
        # print(state_variables)
 
-        #q1 = state_variables[1]
-        #q2 = state_variables[2]
-        q1 = (float(state_variables[1])-zero_potentiometer)*0.00153
+        q1 = state_variables[1]
+        q2 = state_variables[2]
+
+        #print("q1: " + str(q1))
+        #print("q2: " + str(q2))
+        q1 = (float(state_variables[1])-zero_potentiometer)*q1_increment_size
         q2 = (float(state_variables[2])*q2_increment_size)
 
-        print("q1: " + str(q1))
-        print("q2: " + str(q2))
+
 
         # assign previous values
-        q1prev = q1
-        q1prevprev = q1prev
-        q2prev = q2
-        q2prevprev = q2prev
+ 
 
-        # three point difference for q1
+        ## three point difference for q1
         q1dot = (0.5*q1prevprev-2*q1prev+3/2*q1)/(delta_t)
-        # three point difference for q2
+        ## three point difference for q2
         q2dot = (0.5*q2prevprev-2*q2prev+3/2*q2)/(delta_t)
+
+        ## 2 point difference
+        #q1dot = (q1-q1prev)/(delta_t)
+        #q2dot = (q2-q2prev)/(delta_t)
+
+
+
+        #print("q1dot: " + str(q1dot))
+        #print("q2dot: " + str(q2dot))
 
         # Predetermined for increased speed
         sin_q1 = math.sin(q1)           # sin(q1)
@@ -149,25 +165,26 @@ while True:#making a loop#finishing the loop
         atan_q2 = math.atan(q2)         # atan(q2)
          
         # Non-linear control: Determined in vars_for_mcu.m 
-        torque = 0.008*q2dot - 0.008*q1dot + 1.0224*sin_q1_q2 + 0.024492*q1dot**2*sin_q2 \
-        + ((0.024492*cos_q2 + 0.025643)**2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2\
-        + 12.7*q2dot - 60.737*atan_q2) - (1.0*(0.024492*cos_q2 + 0.025643)*(- 0.024492*sin_q2*q2dot**2\
-        - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 + 2.2984*sin_q1 + 0.0071))/(0.048984*cos_q2\
-        + 0.079417)
+        torque =    0.008*q2dot - 0.008*q1dot + 1.0224*sin_q1_q2 + 0.024492*q1dot**2*sin_q2\
+         + ((0.024492*cos_q2 + 0.025643)**2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2\
+          + 12.7*q2dot - 60.737*atan_q2) - (1.0*(0.024492*cos_q2 + 0.025643)*(- 0.024492*sin_q2*q2dot**2\
+           - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 + 2.2984*sin_q1 +\
+            0.0071*np.sign(q1dot)))/(0.048984*cos_q2 + 0.079417)
 
-    
+
+
         if(int(np.sign(torque))>0): # Torque is positive
-            send_torque = "$T,"+str(int(1000*torque)) + ",1" + ack
-            print(send_torque)
+            send_torque = "$T,"+str(int(1000*torque)) + ",0" + ack
+           # print(send_torque)
             ser.write(send_torque.encode('utf-8'))
 
         else: # Torque is negative
-            send_torque = "$T,"+str(int(-1000*torque)) + ",0" + ack
-            print(send_torque)
+            send_torque = "$T,"+str(int(-1000*torque)) + ",1" + ack
+            #print(send_torque)
             ser.write(send_torque.encode('utf-8'))
 
     
-    file_.write(return_data)
+    
 
     if msvcrt.kbhit(): # The press of any key will results entering if
         break
