@@ -36,11 +36,19 @@ void startPeripherals(){
 
 void init_variables(){
 
-	rx_buffer = (uint8_t*)malloc(8*sizeof(uint8_t));
-	memset(rx_buffer,0x00,8);
+	rx_buffer = (uint8_t*)malloc(16*sizeof(uint8_t));
+	memset(rx_buffer,0x00,16);
 
-	rx_buffer_copy = (uint8_t*)malloc(8*sizeof(uint8_t));
-	memset(rx_buffer_copy,0x00,8);
+	rx_buffer_copy = (uint8_t*)malloc(16*sizeof(uint8_t));
+	memset(rx_buffer_copy,0x00,16);
+
+
+	torque_received = (char*)malloc(8*sizeof(char));
+	memset(torque_received,0x00,8);
+
+	motor_dir = (char*)malloc(8*sizeof(char));
+	memset(motor_dir,0x00,8);
+
 
 	verification = (uint8_t*)malloc(8*sizeof(uint8_t));
 	memset(verification,0x00,8);

@@ -34,7 +34,7 @@ uint32_t startval_sampledPotentiometer = 1200;
 // Controlling torque of motor
 uint8_t duty_cycle = 0;
 
-uint8_t motor_dir = 0;
+char* motor_dir = 0;
 
 uint8_t enable_encoder_reading = 1;
 uint8_t encoder_flag = 0;
@@ -79,8 +79,8 @@ size_t size_torque = 0;
 
 // Torque
 float controller_torque = 0;
-uint32_t torque_received = 1;
-
+char* torque_received = 0;
+uint8_t  torque=0;
 
 
 uint8_t receive_send = 0;

@@ -59,6 +59,7 @@ void uart_request(){
 			if(*(rx_buffer+3) == '1'){
 				HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
 				enable_data_aquisition = 1;
+				receive_send = 1;
 			}
 			else if(rx_buffer[3] == '0'){
 				enable_data_aquisition = 0;
@@ -67,30 +68,12 @@ void uart_request(){
 
 		case 'T':
 			torque_received = strtok((char*)rx_buffer_copy, "$T,");
-			motor_dir = (strtok(NULL, ",\n"));
+			motor_dir = (strtok(NULL, ",\r\n"));
 
-			controller_torque = 100 - ( ( (float)torque_received)/100+312.52)/15.828;
-			output_torque(motor_dir,controller_torque);
+			//controller_torque = 100 - ( ( (float)torque_received)/100+312.52f)/15.828f;
+			//output_torque(motor_dir,controller_torque);
 			receive_send = 1;
 			break;
-
-//		case 'C':	// send q1 values back
-//			if(*(rx_buffer+3) == '1'){
-//			}
-//			else if(*(rx_buffer+3) == '0'){
-//
-//			}
-//
-//			break;
-//
-//		case 'D':	// Enable Control system to compute output torque
-//			if(rx_buffer[2] == 1){
-//				start = 1;
-//			}
-//			else if(rx_buffer[2] == 0){
-//				start = 0;
-//			}
-//			break;
 //
 //		case 'F':	// Changing the duty-cycle output or control speed of motor
 ////			data_buffer = rx_buffer;
@@ -102,24 +85,6 @@ void uart_request(){
 //
 //
 //			HAL_UART_Transmit_IT(&huart1, ((uint8_t*)rx_buffer),strlen((char*)rx_buffer));
-//			break;
-//
-//		case 'G': //Enable interrupts for encoder pulses
-//			if(rx_buffer[3] == 1){
-//				enable_encoder_reading = 1;
-//			}
-//			else if(rx_buffer[3] == 0){
-//				enable_encoder_reading = 0;
-//			}
-//			break;
-//
-//		case 'H': //Enable interrupts for ADC
-//			if(rx_buffer[3] == '1'){
-//				enable_ADC_interrupt = 1;
-//			}
-//			else if(rx_buffer[3] == '0'){
-//				enable_ADC_interrupt = 0;
-//			}
 //			break;
 //
 //		case 'I': // Change direction of motor
@@ -135,11 +100,12 @@ void uart_request(){
 //
 //			break;
 
+			//memset(rx_buffer,0x00, 16);
+			//memset(rx_buffer_copy,0x00, 16);
 
 		}
-
+		rx_buffer_cntr = 0;
 	}
-
 	HAL_UART_Receive_IT(&huart1, &rx_byte, 1);
 
 

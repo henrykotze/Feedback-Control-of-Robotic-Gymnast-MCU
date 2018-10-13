@@ -40,7 +40,7 @@ extern uint32_t startval_sampledPotentiometer; // first sampled value will be 0-
 // Controlling torque of motor
 extern uint8_t duty_cycle;				// duty cycle of PWM signal send to motor controller IC
 extern uint8_t* discrete_arctan;		// array containing discretized arctan functions
-extern uint8_t motor_dir;				// direction of motor: 0 ccw, 1 cw
+extern char* motor_dir;				// direction of motor: 0 ccw, 1 cw
 extern uint8_t compensate;				// flag to compensate for overshoot
 extern uint8_t control_state;					// determines which controller is active
 extern float alpha;						// alpha value in the swing-up controller
@@ -136,7 +136,7 @@ extern float sin_q1_q2;
 
 // torque detemermined from controller
 extern float controller_torque;
-extern uint32_t torque_received;
+extern char* torque_received;
 
 extern float time_del;
 

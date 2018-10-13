@@ -119,7 +119,7 @@ while True:#making a loop#finishing the loop
         print(len(state_variables))
         print(state_variables)
         q1 = (float(state_variables[2])-zero_potentiometer)*0.00153
-        q2 = float(state_variables[3])*q2_increment_size
+        q2 = (float(state_variables[3])*q2_increment_size)
 
         # assign previous values
         q1prev = q1
@@ -131,11 +131,17 @@ while True:#making a loop#finishing the loop
         q1dot = (0.5*q1prevprev-2*q1prev+3/2*q1)/(delta_t)
         # three point difference for q2
         q2dot = (0.5*q2prevprev-2*q2prev+3/2*q2)/(delta_t)
+
+        sin_q1 = math.sin(q1)           # sin(q1)
+        sin_q2 = math.sin(q2)           # sin(q2)
+        sin_q1_q2 = math.sin(q1+q2)     # sin(q2+q1)
+        cos_q2 = math.cos(q2)           # cos(q2)
+        atan_q2 = math.atan(q2)         # atan(q2)
          
-         torque = 0.008*q2dot - 0.008*q1dot + 1.0224*sin(q1 + q2) + 0.024492*q1dot**2*sin(q2) \
-        + ((0.024492*cos(q2) + 0.025643)^2/(0.048984*cos(q2) + 0.079417) - 0.025643)*(58.0*q2\
-        + 12.7*q2dot - 60.737*atan(q1dot)) - (1.0*(0.024492*cos(q2) + 0.025643)*(- 0.024492*sin(q2)*q2dot**2\
-        - 0.048984*q1dot*sin(q2)*q2dot + 1.0224*sin(q1 + q2) + 2.2984*sin(q1) + 0.0071))/(0.048984*cos(q2)\
+        torque = 0.008*q2dot - 0.008*q1dot + 1.0224*sin_q1_q2 + 0.024492*q1dot**2*sin_q2 \
+        + ((0.024492*cos_q2 + 0.025643)**2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2\
+        + 12.7*q2dot - 60.737*atan_q2) - (1.0*(0.024492*cos_q2 + 0.025643)*(- 0.024492*sin_q2*q2dot**2\
+        - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 + 2.2984*sin_q1 + 0.0071))/(0.048984*cos_q2\
         + 0.079417)
 
         send_torque = "$T,"+str(int(1000*torque))

@@ -32,7 +32,6 @@ void user_main(){
 			time += 1;
 			sprintf(send_time,"%lu", time);
 			data_flag = 0;
-//			data_aquisition();
 			if(receive_send == 1){
 			data_aquisition();
 			HAL_UART_Transmit_DMA(&huart1, ((uint8_t*)data_buffer),strlen((char*)data_buffer));

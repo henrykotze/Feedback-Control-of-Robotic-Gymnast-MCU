@@ -54,24 +54,25 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
 }
 
 void HAL_UART_TxCpltCallback (UART_HandleTypeDef *huart){
-	memset(rx_buffer,0x00, 8);
-	rx_buffer_cntr = 0;
+	memset(rx_buffer,0x00, 16);
+	memset(rx_buffer_copy,0x00, 16);
+//	rx_buffer_cntr = 0;
 	memset(data_buffer,0x00,40);
 }
 
 
 void read_motor_position(){
 
-	prevprev_q2 = prev_q2;
-	prev_q2 = q2;
+	//prevprev_q2 = prev_q2;
+	//prev_q2 = q2;
 
 	if(HAL_GPIO_ReadPin(DIR_GPIO_Port, DIR_Pin) == 1){ // actuated pendulum is turning clockwise
 		q2_steps -= 1;
-		q2 = q2_steps*dir_increment_size;
+		//q2 = q2_steps*dir_increment_size;
 	}
 	else{ // actuated pendulum is turning anti-clockwise
 		q2_steps += 1;
-		q2 = q2_steps*dir_increment_size;
+		//q2 = q2_steps*dir_increment_size;
 	}
 	sprintf(send_q2,"%d", q2_steps);
 
