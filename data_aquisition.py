@@ -83,6 +83,9 @@ for i in range(-4000,4001):
     discrete_cos.insert(i+4000,math.sin( ((2*math.pi)/4000)*i ) )
     discrete_atan.insert(i+4000,math.sin( ((2*math.pi)/4000)*i ) )
 
+# K matrix
+K = [1, 2, 3, 4]
+
 
 filename = input('filename to save data: ')
 description = input('write description for file: ')
