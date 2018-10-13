@@ -54,7 +54,7 @@ q1prevprev = float(0)
 q2prevprev = float(0)
 
 # variables used in sin/cos function to only compute once
-sin_q1 = float(0)    # sin(q1)
+sin_q1 = float(0)    # sin_q1
 sin_q2 = float(0)    # sin(q2)
 sin_q1_q2 = float(0) # sin(q2+q1)
 cos_q2 = float(0)    # cos(q2)
@@ -118,7 +118,7 @@ while(send_data != '$B,1\r\n'): # if send_data = $B,1\r\n the experiment starts 
 print('Receiving data over UART')    
 while True:#making a loop#finishing the loop
     return_data = (ser.read_until('\n'.encode('utf-8'))).decode('utf-8')
-    file_.write(return_data)
+    #file_.write(return_data)
     state_variables = return_data.split(",")
 
     q1prev = q1
@@ -144,13 +144,13 @@ while True:#making a loop#finishing the loop
  
 
         ## three point difference for q1
-        q1dot = (0.5*q1prevprev-2*q1prev+3/2*q1)/(delta_t)
+        #q1dot = (0.5*q1prevprev-2*q1prev+3/2*q1)/(delta_t)
         ## three point difference for q2
-        q2dot = (0.5*q2prevprev-2*q2prev+3/2*q2)/(delta_t)
+        #q2dot = (0.5*q2prevprev-2*q2prev+3/2*q2)/(delta_t)
 
         ## 2 point difference
-        #q1dot = (q1-q1prev)/(delta_t)
-        #q2dot = (q2-q2prev)/(delta_t)
+        q1dot = (q1-q1prev)/(delta_t)
+        q2dot = (q2-q2prev)/(delta_t)
 
 
 
@@ -165,21 +165,23 @@ while True:#making a loop#finishing the loop
         atan_q2 = math.atan(q2)         # atan(q2)
          
         # Non-linear control: Determined in vars_for_mcu.m 
-        torque =    0.008*q2dot - 0.008*q1dot + 1.0224*sin_q1_q2 + 0.024492*q1dot**2*sin_q2\
-         + ((0.024492*cos_q2 + 0.025643)**2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2\
-          + 12.7*q2dot - 60.737*atan_q2) - (1.0*(0.024492*cos_q2 + 0.025643)*(- 0.024492*sin_q2*q2dot**2\
-           - 0.048984*q1dot*sin_q2*q2dot + 1.0224*sin_q1_q2 + 2.2984*sin_q1 +\
-            0.0071*np.sign(q1dot)))/(0.048984*cos_q2 + 0.079417)
+        torque = 0.008*q2dot + 1.0224*sin_q1_q2 + 0.024492*q1dot**2*sin_q2 + ((0.024492*cos_q2 \
+        + 0.025643)**2/(0.048984*cos_q2 + 0.079417) - 0.025643)*(58.0*q2 + 12.7*q2dot - 60.737*atan_q2)\
+        - (1.0*(0.024492*cos_q2 + 0.025643)*(- 0.024492*sin_q2*q2dot**2 - 0.048984*q1dot*sin_q2*q2dot\
+        + 1.0224*sin_q1_q2 + 2.2984*sin_q1 + 0.0071*np.sign(q1dot)))/(0.048984*cos_q2 + 0.079417)
+
+
+ 
 
 
 
         if(int(np.sign(torque))>0): # Torque is positive
-            send_torque = "$T,"+str(int(1000*torque)) + ",0" + ack
+            send_torque = "$T,"+str(int(1000*torque/3)) + ",0" + ack
            # print(send_torque)
             ser.write(send_torque.encode('utf-8'))
 
         else: # Torque is negative
-            send_torque = "$T,"+str(int(-1000*torque)) + ",1" + ack
+            send_torque = "$T,"+str(int(-1000*torque/3)) + ",1" + ack
             #print(send_torque)
             ser.write(send_torque.encode('utf-8'))
 
