@@ -1,6 +1,6 @@
 Configuration	acrobat_v4
 STM32CubeMX 	4.25.0
-Date	08/22/2018
+Date	10/18/2018
 MCU	STM32F030K6Tx
 
 
@@ -11,7 +11,9 @@ ADC	IN9	ADC_IN9	PB1
 SYS	Serial_Wire	SYS_SWCLK	PA14
 SYS	Serial_Wire	SYS_SWDIO	PA13
 SYS	SysTick	SYS_VS_Systick	VP_SYS_VS_Systick
-TIM3	PWM Generation CH1	TIM3_CH1	PA6
+TIM3	PWM Generation CH2	TIM3_CH2	PA7
+TIM14	Enable_Timer	TIM14_VS_ClockSourceINT	VP_TIM14_VS_ClockSourceINT
+TIM16	Enable_Timer	TIM16_VS_ClockSourceINT	VP_TIM16_VS_ClockSourceINT
 USART1	Asynchronous	USART1_RX	PA10
 USART1	Asynchronous	USART1_TX	PA9
 
@@ -21,14 +23,14 @@ Pin Nb	PINs	FUNCTIONs	LABELs
 9	PA3	GPIO_Output	DEBUG_LED1
 10	PA4	GPIO_Output	DEBUG_LED2
 11	PA5	GPIO_Output	MOTOR_DIR
-12	PA6	TIM3_CH1	MOTOR_PWM1
+13	PA7	TIM3_CH2	PWM_SIGNAL
 14	PB0	ADC_IN8	POTENTIOMETER
 15	PB1	ADC_IN9	CURRENT
 19	PA9	USART1_TX	
 20	PA10	USART1_RX	
 23	PA13	SYS_SWDIO	
 24	PA14	SYS_SWCLK	
-27	PB4	GPIO_Input	PULSE
+27	PB4	GPIO_EXTI4	ENCODER
 28	PB5	GPIO_Input	DIR
 
 
@@ -37,7 +39,7 @@ SOFTWARE PROJECT
 
 Project Settings : 
 Project Name : acrobat_v4
-Project Folder : C:\Users\Henry\Desktop\Skripsie\software\acrobat_v4
+Project Folder : C:\Users\Henry\Desktop\Skripsie\Feedback-Control-of-Robotic-Gymnast-MCU\acrobat_v4
 Toolchain / IDE : TrueSTUDIO
 Firmware Package Name and Version : STM32Cube FW_F0 V1.9.0
 

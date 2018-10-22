@@ -46,6 +46,7 @@ void user_main(){
 	if(send_data_flag && enable_data_aquisition){
 		send_data_flag = 0;
 		HAL_UART_Transmit_DMA(&huart1, ((uint8_t*)data_buffer),strlen((char*)data_buffer));
+		//control_law();
 	}
 
 //	time = htim14.Instance->CNT;
